@@ -1,1 +1,39 @@
-<p>my-bookings works!</p>
+<div class="container page">
+  <h1 class="titre-section">Mes réservations</h1>
+
+  @for (r of reservations(); track r.id) {
+    @let seance = seanceDe(r);
+    <article class="billet">
+      <div class="billet__film">
+        <span class="material-symbols-outlined">movie</span>
+      </div>
+
+      <div class="billet__infos">
+        <a [routerLink]="['/film', filmDe(r).id]"><h2>{{ filmDe(r).title }}</h2></a>
+        <p class="texte-doux">
+          <span class="material-symbols-outlined">location_on</span> {{ cinemaDe(r)?.nom }}
+        </p>
+        <p class="capitale">
+          {{ seance.date | date: 'EEEE d MMMM' }} · {{ seance.heure }} · {{ seance.version }}
+        </p>
+        <div class="sieges">
+          @for (s of r.sieges; track s) {
+            <span class="ticket">{{ s }}</span>
+          }
+        </div>
+      </div>
+
+      <div class="billet__actions">
+        <button type="button" class="bouton-contour annuler" (click)="annuler(r)">
+          <span class="material-symbols-outlined">close</span> Annuler
+        </button>
+      </div>
+    </article>
+  } @empty {
+    <div class="etat-vide">
+      <span class="material-symbols-outlined">confirmation_number</span>
+      <p>Aucune réservation pour le moment.</p>
+      <a routerLink="/" class="bouton-or">Voir les films à l'affiche</a>
+    </div>
+  }
+</div>

@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 
 import { MovieDetail } from './movie-detail';
 
@@ -8,12 +9,14 @@ describe('MovieDetail', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MovieDetail]
+      imports: [MovieDetail],
+      providers: [provideRouter([])],
     })
     .compileComponents();
 
     fixture = TestBed.createComponent(MovieDetail);
     component = fixture.componentInstance;
+    fixture.componentRef.setInput('id', '1184918');
     await fixture.whenStable();
   });
 

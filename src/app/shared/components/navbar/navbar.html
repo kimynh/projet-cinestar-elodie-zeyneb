@@ -1,1 +1,36 @@
-<p>navbar works!</p>
+<header class="navbar">
+  <div class="container navbar__contenu">
+    <a routerLink="/" class="logo" (click)="menuOuvert.set(false)">
+      <span class="logo__etoile">★</span>
+      <span class="texte-or">Ciné Star</span>
+    </a>
+
+    <form class="recherche" role="search" (submit)="$event.preventDefault(); rechercher(q.value)">
+      <span class="material-symbols-outlined">search</span>
+      <input #q type="search" placeholder="Rechercher un film…" aria-label="Rechercher un film" />
+    </form>
+
+    <button
+      class="burger"
+      type="button"
+      [attr.aria-expanded]="menuOuvert()"
+      aria-label="Ouvrir le menu"
+      (click)="menuOuvert.set(!menuOuvert())"
+    >
+      <span class="material-symbols-outlined">{{ menuOuvert() ? 'close' : 'menu' }}</span>
+    </button>
+
+    <nav class="liens" [class.ouvert]="menuOuvert()" (click)="menuOuvert.set(false)">
+      <a routerLink="/" routerLinkActive="actif" [routerLinkActiveOptions]="{ exact: true }">À l'affiche</a>
+      <a routerLink="/mes-reservations" routerLinkActive="actif">Mes réservations</a>
+      <a routerLink="/mes-favoris" routerLinkActive="actif">Mes favoris</a>
+      @if (connecte()) {
+        <button type="button" class="bouton-contour">
+          <span class="material-symbols-outlined">logout</span> Déconnexion
+        </button>
+      } @else {
+        <a routerLink="/connexion" class="bouton-or">Connexion</a>
+      }
+    </nav>
+  </div>
+</header>

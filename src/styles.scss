@@ -1,39 +1,314 @@
-// Include theming for Angular Material with `mat.theme()`.
-// This Sass mixin will define CSS variables that are used for styling Angular Material
-// components according to the Material 3 design spec.
-// Learn more about theming and how to use it for your application's
-// custom components at https://material.angular.dev/guide/theming
+// Thème Ciné Star : noir et doré.
+// Les couleurs sont définies une seule fois ici (variables --cs-*) et réutilisées
+// par tous les composants. Angular Material est aligné dessus via theme-overrides.
 @use '@angular/material' as mat;
+
+:root {
+  --cs-noir: #0a0a0b;
+  --cs-noir-2: #131315;
+  --cs-noir-3: #1c1c1f;
+  --cs-bordure: #2a2a2e;
+  --cs-texte: #f3efe6;
+  --cs-texte-doux: #a8a29a;
+  --cs-or: #d4af37;
+  --cs-or-clair: #f1d98a;
+  --cs-or-fonce: #9c7a1c;
+  --cs-degrade-or: linear-gradient(135deg, var(--cs-or-clair) 0%, var(--cs-or) 45%, var(--cs-or-fonce) 100%);
+  --cs-rouge: #e0565b;
+  --cs-rayon: 12px;
+  --cs-police-titre: 'Cinzel', Georgia, serif;
+  --cs-police: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
 
 html {
   height: 100%;
+  color-scheme: dark;
   @include mat.theme(
     (
       color: (
-        primary: mat.$azure-palette,
-        tertiary: mat.$blue-palette,
+        theme-type: dark,
+        primary: mat.$yellow-palette,
+        tertiary: mat.$orange-palette,
       ),
-      typography: Roboto,
+      typography: Inter,
       density: 0,
+    )
+  );
+  @include mat.theme-overrides(
+    (
+      primary: #d4af37,
+      on-primary: #1a1405,
+      primary-container: #3a2f0f,
+      on-primary-container: #f1d98a,
+      surface: #0a0a0b,
+      on-surface: #f3efe6,
+      on-surface-variant: #a8a29a,
+      surface-container: #131315,
+      surface-container-high: #1c1c1f,
+      surface-container-highest: #232327,
+      outline: #3a3a3f,
+      outline-variant: #2a2a2e,
+      error: #e0565b,
     )
   );
 }
 
 body {
-  // Default the application to a light color theme. This can be changed to
-  // `dark` to enable the dark color theme, or to `light dark` to defer to the
-  // user's system settings.
-  color-scheme: light;
-
-  // Set a default background, font and text colors for the application using
-  // Angular Material's system-level CSS variables. Learn more about these
-  // variables at https://material.angular.dev/guide/system-variables
-  background-color: var(--mat-sys-surface);
-  color: var(--mat-sys-on-surface);
-  font: var(--mat-sys-body-medium);
-
-  // Reset the user agent margin.
   margin: 0;
-  height: 100%;
+  min-height: 100%;
+  background: var(--cs-noir);
+  color: var(--cs-texte);
+  font-family: var(--cs-police);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
 }
-/* You can add global styles to this file, and also import other style files */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+a {
+  color: var(--cs-or);
+  text-decoration: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--cs-police-titre);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+  margin: 0;
+}
+
+// ---------- Mise en page ----------
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-inline: 16px;
+
+  @media (min-width: 768px) {
+    padding-inline: 32px;
+  }
+}
+
+.page {
+  padding-block: 32px 64px;
+}
+
+.titre-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.5rem;
+  margin-bottom: 24px;
+
+  &::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--cs-or-fonce), transparent);
+  }
+}
+
+.texte-or {
+  background: var(--cs-degrade-or);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.texte-doux {
+  color: var(--cs-texte-doux);
+}
+
+.grille-films {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 24px 16px;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: 32px 24px;
+  }
+}
+
+.carte {
+  background: var(--cs-noir-2);
+  border: 1px solid var(--cs-bordure);
+  border-radius: var(--cs-rayon);
+}
+
+// Message affiché quand une liste est vide ou qu'une erreur survient
+.etat-vide {
+  text-align: center;
+  padding: 64px 16px;
+  color: var(--cs-texte-doux);
+
+  .material-symbols-outlined {
+    font-size: 48px;
+    color: var(--cs-or-fonce);
+    margin-bottom: 12px;
+  }
+
+  p {
+    margin: 0 0 20px;
+  }
+}
+
+// Bouton doré principal (en complément des boutons Material)
+.bouton-or {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 999px;
+  background: var(--cs-degrade-or);
+  color: #1a1405;
+  font: 600 0.95rem var(--cs-police);
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.2s ease,
+    opacity 0.2s;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 24px rgba(212, 175, 55, 0.35);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+.bouton-contour {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border: 1px solid var(--cs-or-fonce);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--cs-or);
+  font: 500 0.9rem var(--cs-police);
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+
+  &:hover {
+    background: rgba(212, 175, 55, 0.08);
+    border-color: var(--cs-or);
+  }
+}
+
+// Pastilles (genres, filtres)
+.pastille {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 16px;
+  border: 1px solid var(--cs-bordure);
+  border-radius: 999px;
+  background: var(--cs-noir-2);
+  color: var(--cs-texte-doux);
+  font: 500 0.85rem var(--cs-police);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    border-color: var(--cs-or-fonce);
+    color: var(--cs-texte);
+  }
+
+  &.active {
+    background: var(--cs-degrade-or);
+    border-color: transparent;
+    color: #1a1405;
+  }
+}
+
+.material-symbols-outlined {
+  vertical-align: middle;
+}
+
+// Champs Material en pleine largeur dans les formulaires
+.mat-mdc-form-field {
+  width: 100%;
+}
+
+// ---------- Pages Connexion et Inscription ----------
+
+.page-auth {
+  min-height: calc(100dvh - 160px);
+  display: grid;
+  place-items: center;
+  padding: 40px 16px;
+  background: radial-gradient(ellipse at 50% 0%, rgba(212, 175, 55, 0.14), transparent 60%);
+}
+
+.carte-auth {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 36px 28px 28px;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  border-radius: 16px;
+  background: var(--cs-noir-2);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+  text-align: center;
+
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  > p {
+    margin: 4px 0 24px;
+  }
+
+  .mat-mdc-form-field {
+    text-align: left;
+  }
+
+  .bouton-or {
+    margin-top: 12px;
+    width: 100%;
+  }
+
+  .erreur {
+    margin: 0 0 4px;
+    color: var(--cs-rouge);
+    font-size: 0.85rem;
+  }
+}
+
+.carte-auth__etoile {
+  color: var(--cs-or);
+  font-size: 1.6rem;
+  margin-bottom: 4px;
+}
+
+.carte-auth > .carte-auth__bas {
+  margin: 20px 0 0;
+  font-size: 0.9rem;
+  color: var(--cs-texte-doux);
+}

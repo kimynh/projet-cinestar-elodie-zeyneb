@@ -1,1 +1,21 @@
-<p>movie-card works!</p>
+<a class="carte-film" [routerLink]="['/film', movie().id]">
+  <div class="carte-film__affiche">
+    @if (affiche(); as src) {
+      <img [src]="src" [alt]="'Affiche de ' + movie().title" loading="lazy" />
+    } @else {
+      <!-- Affiche par défaut quand TMDB n'a pas d'image -->
+      <div class="affiche-vide">
+        <span class="material-symbols-outlined">movie</span>
+        <span>{{ movie().title }}</span>
+      </div>
+    }
+    @if (movie().vote_average) {
+      <span class="note">
+        <span class="material-symbols-outlined">star</span>
+        {{ movie().vote_average | number: '1.1-1' }}
+      </span>
+    }
+  </div>
+  <h3 class="carte-film__titre">{{ movie().title }}</h3>
+  <p class="carte-film__annee">{{ annee() }}</p>
+</a>

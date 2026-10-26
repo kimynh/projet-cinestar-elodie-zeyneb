@@ -1,1 +1,38 @@
-<p>seat-map works!</p>
+<div class="plan">
+  <div class="ecran">
+    <span>Écran</span>
+  </div>
+
+  <div class="salle">
+    @for (lettre of lettres(); track lettre) {
+      <div class="rangee">
+        <span class="rangee__lettre">{{ lettre }}</span>
+        @for (n of numeros(); track n) {
+          @let siege = lettre + n;
+          <button
+            type="button"
+            class="siege"
+            [class.pris]="estPris(siege)"
+            [class.choisi]="estChoisi(siege)"
+            [disabled]="estPris(siege)"
+            [attr.aria-label]="'Siège ' + siege"
+            [attr.aria-pressed]="estChoisi(siege)"
+            [title]="siege"
+            (click)="basculer(siege)"
+          ></button>
+        }
+        <span class="rangee__lettre">{{ lettre }}</span>
+      </div>
+    }
+  </div>
+
+  <ul class="legende">
+    <li><span class="siege"></span> Libre</li>
+    <li><span class="siege choisi"></span> Sélectionné</li>
+    <li><span class="siege pris"></span> Pris</li>
+  </ul>
+
+  @if (selection().length >= maxSieges()) {
+    <p class="limite">Maximum {{ maxSieges() }} places par réservation.</p>
+  }
+</div>

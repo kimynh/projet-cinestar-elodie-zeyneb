@@ -1,1 +1,48 @@
-<p>home works!</p>
+@if (vedette(); as film) {
+  <section class="hero">
+    <div class="container hero__contenu">
+      <p class="hero__surtitre">À l'affiche cette semaine</p>
+      <h1 class="hero__titre">{{ film.title }}</h1>
+      <p class="hero__resume">{{ film.overview }}</p>
+      <div class="hero__actions">
+        <a class="bouton-or" [routerLink]="['/film', film.id]">
+          <span class="material-symbols-outlined">confirmation_number</span> Réserver
+        </a>
+        <a class="bouton-contour" [routerLink]="['/film', film.id]">Voir la fiche</a>
+      </div>
+    </div>
+  </section>
+}
+
+<section class="container page">
+  <h2 class="titre-section">Films à l'affiche</h2>
+
+  <div class="genres" role="group" aria-label="Filtrer par genre">
+    <button type="button" class="pastille" [class.active]="genreChoisi() === null" (click)="genreChoisi.set(null)">
+      Tous
+    </button>
+    @for (genre of genres(); track genre.id) {
+      <button
+        type="button"
+        class="pastille"
+        [class.active]="genreChoisi() === genre.id"
+        (click)="genreChoisi.set(genre.id)"
+      >
+        {{ genre.name }}
+      </button>
+    }
+  </div>
+
+  @if (filmsFiltres().length) {
+    <div class="grille-films">
+      @for (film of filmsFiltres(); track film.id) {
+        <app-movie-card [movie]="film" />
+      }
+    </div>
+  } @else {
+    <div class="etat-vide">
+      <span class="material-symbols-outlined">theaters</span>
+      <p>Aucun film de ce genre à l'affiche pour le moment.</p>
+    </div>
+  }
+</section>

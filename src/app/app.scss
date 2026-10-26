@@ -1,0 +1,29 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+
+.contenu {
+  flex: 1;
+}
+
+.pied {
+  border-top: 1px solid var(--cs-bordure);
+  padding-block: 24px;
+  font-size: 0.82rem;
+}
+
+.pied__contenu {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.pied__logo {
+  font: 700 1rem var(--cs-police-titre);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}

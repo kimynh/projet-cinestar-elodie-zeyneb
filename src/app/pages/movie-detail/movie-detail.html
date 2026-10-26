@@ -1,1 +1,115 @@
-<p>movie-detail works!</p>
+<section class="bandeau" [style.--fond]="fond() ? 'url(' + fond() + ')' : null">
+  <div class="container bandeau__contenu">
+    <div class="affiche">
+      @if (affiche(); as src) {
+        <img [src]="src" [alt]="'Affiche de ' + film().title" />
+      } @else {
+        <div class="affiche-vide"><span class="material-symbols-outlined">movie</span></div>
+      }
+    </div>
+
+    <div class="infos">
+      <h1>{{ film().title }}</h1>
+      <p class="meta">
+        <span>{{ film().release_date | date: 'yyyy' }}</span>
+        @if (film().runtime) {
+          <span>{{ film().runtime | duree }}</span>
+        }
+        <span class="note"><span class="material-symbols-outlined">star</span>{{ film().vote_average | number: '1.1-1' }}</span>
+      </p>
+      <div class="genres">
+        @for (g of film().genres; track g.id) {
+          <span class="pastille">{{ g.name }}</span>
+        }
+      </div>
+      <p class="resume">{{ film().overview || 'Résumé non disponible.' }}</p>
+      <div class="actions">
+        <a class="bouton-or" href="#seances"><span class="material-symbols-outlined">event_seat</span> Voir les séances</a>
+        <button type="button" class="bouton-contour" aria-label="Ajouter aux favoris">
+          <span class="material-symbols-outlined">favorite</span> Favori
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="container page">
+  <!-- Séances -->
+  <section id="seances" class="bloc">
+    <h2 class="titre-section">Séances</h2>
+    @for (groupe of groupes(); track groupe.cinema) {
+      <div class="cinema carte">
+        <h3><span class="material-symbols-outlined">location_on</span> {{ groupe.cinema }}</h3>
+        @for (jour of groupe.jours; track jour.date) {
+          <div class="jour">
+            <p class="jour__date">{{ jour.date | date: 'EEEE d MMMM' }}</p>
+            <div class="horaires">
+              @for (s of jour.seances; track s.id) {
+                <a class="horaire" [routerLink]="['/reserver', s.id]">
+                  <strong>{{ s.heure }}</strong>
+                  <small>{{ s.version }}</small>
+                </a>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    } @empty {
+      <div class="etat-vide">
+        <span class="material-symbols-outlined">event_busy</span>
+        <p>Pas de séance pour ce film.</p>
+      </div>
+    }
+  </section>
+
+  <!-- Casting -->
+  <section class="bloc">
+    <h2 class="titre-section">Casting</h2>
+    <div class="casting">
+      @for (acteur of casting(); track acteur.id) {
+        <div class="acteur">
+          <div class="acteur__photo">
+            @if (tmdbImage(acteur.profile_path, 'w185'); as src) {
+              <img [src]="src" [alt]="acteur.name" loading="lazy" />
+            } @else {
+              <span class="material-symbols-outlined">person</span>
+            }
+          </div>
+          <strong>{{ acteur.name }}</strong>
+          <small class="texte-doux">{{ acteur.character }}</small>
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- Avis -->
+  <section class="bloc">
+    <h2 class="titre-section">Avis</h2>
+    @for (a of avis(); track a.id) {
+      @let ouvert = avisOuverts().includes(a.id);
+      <article class="avis carte">
+        <header>
+          <span class="avis__initiale">{{ a.author[0] }}</span>
+          <div>
+            <strong>{{ a.author }}</strong>
+            <small class="texte-doux">{{ a.created_at | date: 'd MMM yyyy' }}</small>
+          </div>
+          @if (a.author_details.rating) {
+            <span class="note"><span class="material-symbols-outlined">star</span>{{ a.author_details.rating }}/10</span>
+          }
+        </header>
+        <p [class.replie]="!ouvert">{{ a.content }}</p>
+        @if (a.content.length > 160) {
+          <button type="button" class="lire-suite" (click)="basculerAvis(a.id)">
+            {{ ouvert ? 'Réduire' : 'Lire la suite' }}
+          </button>
+        }
+      </article>
+    } @empty {
+      <div class="etat-vide">
+        <span class="material-symbols-outlined">rate_review</span>
+        <p>Aucun avis pour ce film.</p>
+      </div>
+    }
+  </section>
+</div>

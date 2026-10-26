@@ -1,0 +1,81 @@
+.billet {
+  position: relative;
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  gap: 16px 20px;
+  padding: 20px;
+  margin-bottom: 16px;
+  border: 1px solid var(--cs-bordure);
+  border-left: 4px solid var(--cs-or);
+  border-radius: var(--cs-rayon);
+  background: linear-gradient(90deg, rgba(212, 175, 55, 0.06), var(--cs-noir-2) 40%);
+
+  @media (min-width: 700px) {
+    grid-template-columns: 96px 1fr auto;
+    align-items: center;
+  }
+}
+
+.billet__film {
+  aspect-ratio: 2 / 3;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  background: var(--cs-noir-3);
+  color: var(--cs-or);
+}
+
+.billet__infos {
+  h2 {
+    font-size: 1.15rem;
+    color: var(--cs-texte);
+    margin-bottom: 6px;
+  }
+
+  p {
+    margin: 2px 0;
+    font-size: 0.9rem;
+  }
+
+  .material-symbols-outlined {
+    font-size: 16px;
+  }
+}
+
+.capitale::first-letter {
+  text-transform: uppercase;
+}
+
+.sieges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.ticket {
+  padding: 3px 10px;
+  border: 1px solid var(--cs-or);
+  border-radius: 6px;
+  color: var(--cs-or-clair);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.billet__actions {
+  grid-column: 1 / -1;
+
+  @media (min-width: 700px) {
+    grid-column: auto;
+  }
+}
+
+.annuler {
+  border-color: rgba(224, 86, 91, 0.5);
+  color: var(--cs-rouge);
+
+  &:hover {
+    background: rgba(224, 86, 91, 0.1);
+    border-color: var(--cs-rouge);
+  }
+}

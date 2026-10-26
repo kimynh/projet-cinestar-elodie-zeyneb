@@ -1,0 +1,153 @@
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(10, 10, 11, 0.88);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.25);
+}
+
+.navbar__contenu {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  height: 68px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font: 700 1.35rem var(--cs-police-titre);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.logo__etoile {
+  color: var(--cs-or);
+  font-size: 1.1rem;
+}
+
+.recherche {
+  flex: 1;
+  max-width: 380px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border: 1px solid var(--cs-bordure);
+  border-radius: 999px;
+  background: var(--cs-noir-2);
+  color: var(--cs-texte-doux);
+  transition: border-color 0.2s;
+
+  &:focus-within {
+    border-color: var(--cs-or);
+  }
+
+  input {
+    flex: 1;
+    min-width: 0;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: var(--cs-texte);
+    font: 400 0.9rem var(--cs-police);
+  }
+}
+
+.liens {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-left: auto;
+
+  > a:not(.bouton-or) {
+    position: relative;
+    color: var(--cs-texte-doux);
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding-block: 6px;
+    transition: color 0.2s;
+
+    &:hover,
+    &.actif {
+      color: var(--cs-texte);
+    }
+
+    &.actif::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -2px;
+      height: 2px;
+      background: var(--cs-degrade-or);
+    }
+  }
+
+  .bouton-or {
+    padding: 8px 20px;
+  }
+}
+
+.burger {
+  display: none;
+  margin-left: auto;
+  border: none;
+  background: none;
+  color: var(--cs-or);
+  cursor: pointer;
+}
+
+@media (max-width: 860px) {
+  .navbar__contenu {
+    flex-wrap: wrap;
+    height: auto;
+    padding-block: 12px;
+    gap: 12px;
+  }
+
+  .burger {
+    display: block;
+  }
+
+  .recherche {
+    order: 3;
+    flex-basis: 100%;
+    max-width: none;
+  }
+
+  .liens {
+    display: none;
+    order: 4;
+    flex-basis: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+    padding-bottom: 8px;
+
+    &.ouvert {
+      display: flex;
+    }
+
+    > a:not(.bouton-or) {
+      padding: 10px 0;
+      border-bottom: 1px solid var(--cs-bordure);
+
+      &.actif::after {
+        display: none;
+      }
+
+      &.actif {
+        color: var(--cs-or);
+      }
+    }
+
+    .bouton-or,
+    .bouton-contour {
+      margin-top: 8px;
+    }
+  }
+}

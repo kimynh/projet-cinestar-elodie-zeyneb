@@ -14,6 +14,8 @@ describe('SeatMap', () => {
 
     fixture = TestBed.createComponent(SeatMap);
     component = fixture.componentInstance;
+    fixture.componentRef.setInput('rangees', 8);
+    fixture.componentRef.setInput('siegesParRangee', 12);
     await fixture.whenStable();
   });
 

@@ -1,0 +1,122 @@
+.plan {
+  --taille: clamp(16px, 5.4vw, 30px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  max-width: 100%;
+}
+
+.ecran {
+  width: min(90%, 520px);
+  text-align: center;
+
+  &::before {
+    content: '';
+    display: block;
+    height: 6px;
+    border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+    background: var(--cs-degrade-or);
+    box-shadow: 0 8px 36px rgba(212, 175, 55, 0.45);
+  }
+
+  span {
+    display: block;
+    margin-top: 10px;
+    color: var(--cs-texte-doux);
+    font-size: 0.72rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+  }
+}
+
+.salle {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 100%;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.rangee {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  @media (min-width: 600px) {
+    gap: 6px;
+  }
+}
+
+.rangee__lettre {
+  width: 18px;
+  text-align: center;
+  color: var(--cs-texte-doux);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.siege {
+  display: inline-block;
+  flex-shrink: 0;
+  width: var(--taille);
+  height: var(--taille);
+  padding: 0;
+  border: 1px solid rgba(212, 175, 55, 0.45);
+  border-radius: 6px 6px 3px 3px;
+  background: var(--cs-noir-3);
+  cursor: pointer;
+  transition:
+    transform 0.12s,
+    background 0.15s,
+    border-color 0.15s;
+
+  &:hover:not(:disabled) {
+    border-color: var(--cs-or);
+    transform: scale(1.1);
+  }
+
+  &.choisi {
+    background: var(--cs-degrade-or);
+    border-color: var(--cs-or-clair);
+    box-shadow: 0 0 12px rgba(212, 175, 55, 0.5);
+  }
+
+  // Siège pris : gris barré d'une croix
+  &.pris {
+    border-color: transparent;
+    background:
+      linear-gradient(45deg, transparent 46%, #5a5a60 46%, #5a5a60 54%, transparent 54%),
+      linear-gradient(-45deg, transparent 46%, #5a5a60 46%, #5a5a60 54%, transparent 54%),
+      #26262a;
+    cursor: not-allowed;
+  }
+}
+
+.legende {
+  display: flex;
+  gap: 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--cs-texte-doux);
+  font-size: 0.85rem;
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .siege {
+    --taille: 18px;
+    cursor: default;
+  }
+}
+
+.limite {
+  margin: 0;
+  color: var(--cs-or-clair);
+  font-size: 0.85rem;
+}

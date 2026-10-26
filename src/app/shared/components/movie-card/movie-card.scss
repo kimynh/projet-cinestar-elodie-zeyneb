@@ -1,0 +1,87 @@
+.carte-film {
+  display: block;
+  color: inherit;
+
+  &:hover .carte-film__affiche {
+    transform: translateY(-4px);
+    border-color: var(--cs-or);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(212, 175, 55, 0.3);
+  }
+
+  &:hover .carte-film__titre {
+    color: var(--cs-or-clair);
+  }
+}
+
+.carte-film__affiche {
+  position: relative;
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+  border-radius: var(--cs-rayon);
+  border: 1px solid var(--cs-bordure);
+  background: var(--cs-noir-3);
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s,
+    box-shadow 0.25s;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.affiche-vide {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px;
+  text-align: center;
+  background:
+    radial-gradient(circle at 50% 30%, rgba(212, 175, 55, 0.18), transparent 60%),
+    linear-gradient(180deg, var(--cs-noir-3), var(--cs-noir));
+  color: var(--cs-or);
+  font: 500 0.95rem var(--cs-police-titre);
+
+  .material-symbols-outlined {
+    font-size: 40px;
+    opacity: 0.7;
+  }
+}
+
+.note {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(10, 10, 11, 0.85);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  color: var(--cs-or-clair);
+  font-size: 0.78rem;
+  font-weight: 600;
+
+  .material-symbols-outlined {
+    font-size: 14px;
+  }
+}
+
+.carte-film__titre {
+  margin-top: 12px;
+  font: 600 0.95rem var(--cs-police);
+  letter-spacing: 0;
+  transition: color 0.2s;
+}
+
+.carte-film__annee {
+  margin: 2px 0 0;
+  color: var(--cs-texte-doux);
+  font-size: 0.82rem;
+}

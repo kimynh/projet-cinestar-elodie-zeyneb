@@ -1,0 +1,29 @@
+.loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 64px 16px;
+  color: var(--cs-texte-doux);
+}
+
+.loader__bobine {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 3px solid var(--cs-bordure);
+  border-top-color: var(--cs-or);
+  border-right-color: var(--cs-or-fonce);
+  animation: tourner 0.9s linear infinite;
+}
+
+p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+@keyframes tourner {
+  to {
+    transform: rotate(360deg);
+  }
+}

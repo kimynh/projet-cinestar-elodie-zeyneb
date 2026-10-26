@@ -1,1 +1,20 @@
-<p>search works!</p>
+<div class="container page">
+  @if (q()) {
+    <h1 class="titre-section">Résultats pour « {{ q() }} »</h1>
+  } @else {
+    <h1 class="titre-section">Recherche</h1>
+  }
+
+  @if (resultats().length) {
+    <div class="grille-films">
+      @for (film of resultats(); track film.id) {
+        <app-movie-card [movie]="film" />
+      }
+    </div>
+  } @else {
+    <div class="etat-vide">
+      <span class="material-symbols-outlined">search_off</span>
+      <p>{{ q() ? 'Aucun film trouvé.' : 'Tapez le titre d’un film dans la barre de recherche.' }}</p>
+    </div>
+  }
+</div>

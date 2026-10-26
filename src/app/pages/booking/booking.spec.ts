@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 
 import { Booking } from './booking';
 
@@ -8,12 +9,14 @@ describe('Booking', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Booking]
+      imports: [Booking],
+      providers: [provideRouter([])],
     })
     .compileComponents();
 
     fixture = TestBed.createComponent(Booking);
     component = fixture.componentInstance;
+    fixture.componentRef.setInput('seanceId', '2');
     await fixture.whenStable();
   });
 

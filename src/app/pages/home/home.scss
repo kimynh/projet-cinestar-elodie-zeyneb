@@ -1,0 +1,54 @@
+.hero {
+  position: relative;
+  padding-block: 72px 56px;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 80% 20%, rgba(212, 175, 55, 0.22), transparent 55%),
+    radial-gradient(ellipse at 10% 100%, rgba(156, 122, 28, 0.15), transparent 50%),
+    linear-gradient(180deg, #151309, var(--cs-noir));
+  border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+
+  @media (min-width: 768px) {
+    padding-block: 112px 88px;
+  }
+}
+
+.hero__contenu {
+  max-width: 1200px;
+}
+
+.hero__surtitre {
+  margin: 0 0 12px;
+  color: var(--cs-or);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+}
+
+.hero__titre {
+  max-width: 14ch;
+  font-size: clamp(2.2rem, 7vw, 4.2rem);
+}
+
+.hero__resume {
+  max-width: 56ch;
+  margin: 20px 0 32px;
+  color: var(--cs-texte-doux);
+  font-size: 1.02rem;
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.genres {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 32px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: none;
+}
