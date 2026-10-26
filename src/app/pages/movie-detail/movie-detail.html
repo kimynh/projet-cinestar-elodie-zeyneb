@@ -4,7 +4,7 @@
       @if (affiche(); as src) {
         <img [src]="src" [alt]="'Affiche de ' + film().title" />
       } @else {
-        <div class="affiche-vide"><span class="material-symbols-outlined">movie</span></div>
+        <div class="affiche-vide">★</div>
       }
     </div>
 
@@ -56,7 +56,7 @@
       </div>
     } @empty {
       <div class="etat-vide">
-        <span class="material-symbols-outlined">event_busy</span>
+        <span class="emoji">📅</span>
         <p>Pas de séance pour ce film.</p>
       </div>
     }
@@ -107,7 +107,7 @@
       </article>
     } @empty {
       <div class="etat-vide">
-        <span class="material-symbols-outlined">rate_review</span>
+        <span class="emoji">💬</span>
         <p>Aucun avis pour ce film.</p>
       </div>
     }

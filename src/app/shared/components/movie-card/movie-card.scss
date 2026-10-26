@@ -3,9 +3,15 @@
   color: inherit;
 
   &:hover .carte-film__affiche {
-    transform: translateY(-4px);
+    transform: translateY(-8px) rotate(-1.2deg);
     border-color: var(--cs-or);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(212, 175, 55, 0.3);
+    box-shadow:
+      0 18px 40px rgba(0, 0, 0, 0.6),
+      0 0 32px rgba(245, 197, 66, 0.3);
+
+    &::after {
+      left: 130%;
+    }
   }
 
   &:hover .carte-film__titre {
@@ -18,10 +24,10 @@
   aspect-ratio: 2 / 3;
   overflow: hidden;
   border-radius: var(--cs-rayon);
-  border: 1px solid var(--cs-bordure);
+  border: 1.5px solid var(--cs-bordure);
   background: var(--cs-noir-3);
   transition:
-    transform 0.25s ease,
+    transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
     border-color 0.25s,
     box-shadow 0.25s;
 
@@ -30,52 +36,86 @@
     height: 100%;
     object-fit: cover;
   }
+
+  // Reflet brillant qui traverse l'affiche au survol
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -80%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(100deg, transparent, rgba(255, 244, 214, 0.25), transparent);
+    transform: skewX(-20deg);
+    transition: left 0.7s ease;
+    pointer-events: none;
+  }
 }
 
+// Affiche par défaut quand TMDB n'a pas d'image : 4 variantes de doré
 .affiche-vide {
+  --lueur: rgba(245, 197, 66, 0.35);
+  --fond: #1f1a10;
   height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 12px;
+  gap: 14px;
   padding: 16px;
   text-align: center;
   background:
-    radial-gradient(circle at 50% 30%, rgba(212, 175, 55, 0.18), transparent 60%),
-    linear-gradient(180deg, var(--cs-noir-3), var(--cs-noir));
-  color: var(--cs-or);
-  font: 500 0.95rem var(--cs-police-titre);
+    radial-gradient(circle at 50% 35%, var(--lueur), transparent 60%),
+    linear-gradient(160deg, var(--fond), var(--cs-noir) 85%);
+  color: var(--cs-or-clair);
+  font: italic 700 1.1rem/1.2 var(--cs-police-titre);
 
-  .material-symbols-outlined {
-    font-size: 40px;
-    opacity: 0.7;
+  &[data-teinte='1'] {
+    --lueur: rgba(255, 159, 28, 0.35);
+    --fond: #24160a;
   }
+
+  &[data-teinte='2'] {
+    --lueur: rgba(255, 231, 160, 0.3);
+    --fond: #201d14;
+  }
+
+  &[data-teinte='3'] {
+    --lueur: rgba(224, 165, 38, 0.4);
+    --fond: #1c140a;
+  }
+}
+
+.affiche-vide__etoile {
+  font-size: 2.6rem;
+  color: var(--cs-or);
+  text-shadow: var(--cs-lueur);
 }
 
 .note {
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: 10px;
+  right: 10px;
   display: flex;
   align-items: center;
   gap: 2px;
-  padding: 3px 8px;
+  padding: 4px 9px 4px 7px;
   border-radius: 999px;
-  background: rgba(10, 10, 11, 0.85);
-  border: 1px solid rgba(212, 175, 55, 0.4);
-  color: var(--cs-or-clair);
+  background: var(--cs-degrade-or);
+  color: #1f1500;
   font-size: 0.78rem;
-  font-weight: 600;
+  font-weight: 700;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 
   .material-symbols-outlined {
-    font-size: 14px;
+    font-size: 15px;
+    font-variation-settings: 'FILL' 1;
   }
 }
 
 .carte-film__titre {
-  margin-top: 12px;
-  font: 600 0.95rem var(--cs-police);
+  margin-top: 14px;
+  font: 700 1rem var(--cs-police);
   letter-spacing: 0;
   transition: color 0.2s;
 }
@@ -83,5 +123,5 @@
 .carte-film__annee {
   margin: 2px 0 0;
   color: var(--cs-texte-doux);
-  font-size: 0.82rem;
+  font-size: 0.84rem;
 }

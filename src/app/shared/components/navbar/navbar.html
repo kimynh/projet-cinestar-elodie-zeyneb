@@ -2,7 +2,7 @@
   <div class="container navbar__contenu">
     <a routerLink="/" class="logo" (click)="menuOuvert.set(false)">
       <span class="logo__etoile">★</span>
-      <span class="texte-or">Ciné Star</span>
+      <span class="logo__nom">Ciné <span class="texte-or">Star</span></span>
     </a>
 
     <form class="recherche" role="search" (submit)="$event.preventDefault(); rechercher(q.value)">

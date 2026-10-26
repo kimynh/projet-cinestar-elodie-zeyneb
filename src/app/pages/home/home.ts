@@ -16,6 +16,22 @@ export class Home {
 
   protected genreChoisi = signal<number | null>(null);
 
+  // Un emoji par genre TMDB, pour des filtres plus vivants
+  protected emojis: Record<number, string> = {
+    28: '💥',
+    12: '🧭',
+    16: '🎨',
+    35: '😂',
+    18: '🎭',
+    27: '👻',
+    878: '🚀',
+    53: '🔪',
+    10749: '💖',
+    14: '🧚',
+    10751: '👨‍👩‍👧',
+    80: '🕵️',
+  };
+
   protected vedette = computed(() => this.films()[0]);
 
   protected filmsFiltres = computed(() => {

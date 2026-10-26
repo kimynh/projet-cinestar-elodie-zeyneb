@@ -3,35 +3,39 @@
 
   @for (r of reservations(); track r.id) {
     @let seance = seanceDe(r);
+    <!-- Chaque réservation a la forme d'un billet de cinéma, avec son talon -->
     <article class="billet">
-      <div class="billet__film">
-        <span class="material-symbols-outlined">movie</span>
-      </div>
+      <div class="billet__corps">
+        <div class="billet__film">★</div>
 
-      <div class="billet__infos">
-        <a [routerLink]="['/film', filmDe(r).id]"><h2>{{ filmDe(r).title }}</h2></a>
-        <p class="texte-doux">
-          <span class="material-symbols-outlined">location_on</span> {{ cinemaDe(r)?.nom }}
-        </p>
-        <p class="capitale">
-          {{ seance.date | date: 'EEEE d MMMM' }} · {{ seance.heure }} · {{ seance.version }}
-        </p>
-        <div class="sieges">
-          @for (s of r.sieges; track s) {
-            <span class="ticket">{{ s }}</span>
-          }
+        <div class="billet__infos">
+          <p class="billet__surtitre">Billet · Ciné Star</p>
+          <a [routerLink]="['/film', filmDe(r).id]"><h2>{{ filmDe(r).title }}</h2></a>
+          <p class="texte-doux">
+            <span class="material-symbols-outlined">location_on</span> {{ cinemaDe(r)?.nom }}
+          </p>
+          <p class="capitale">
+            {{ seance.date | date: 'EEEE d MMMM' }} · {{ seance.heure }} · {{ seance.version }}
+          </p>
+          <div class="sieges">
+            @for (s of r.sieges; track s) {
+              <span class="ticket">{{ s }}</span>
+            }
+          </div>
         </div>
       </div>
 
-      <div class="billet__actions">
-        <button type="button" class="bouton-contour annuler" (click)="annuler(r)">
+      <div class="billet__talon">
+        <span class="talon__nombre">{{ r.sieges.length }}</span>
+        <span class="talon__label">place{{ r.sieges.length > 1 ? 's' : '' }}</span>
+        <button type="button" class="annuler" (click)="annuler(r)">
           <span class="material-symbols-outlined">close</span> Annuler
         </button>
       </div>
     </article>
   } @empty {
     <div class="etat-vide">
-      <span class="material-symbols-outlined">confirmation_number</span>
+      <span class="emoji">🎟️</span>
       <p>Aucune réservation pour le moment.</p>
       <a routerLink="/" class="bouton-or">Voir les films à l'affiche</a>
     </div>

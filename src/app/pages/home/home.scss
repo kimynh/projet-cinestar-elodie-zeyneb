@@ -1,54 +1,140 @@
 .hero {
   position: relative;
-  padding-block: 72px 56px;
+  padding-block: 56px 64px;
   overflow: hidden;
   background:
-    radial-gradient(ellipse at 80% 20%, rgba(212, 175, 55, 0.22), transparent 55%),
-    radial-gradient(ellipse at 10% 100%, rgba(156, 122, 28, 0.15), transparent 50%),
-    linear-gradient(180deg, #151309, var(--cs-noir));
-  border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+    radial-gradient(ellipse at 50% 0%, rgba(245, 197, 66, 0.22), transparent 60%),
+    linear-gradient(180deg, #17120a, transparent);
 
   @media (min-width: 768px) {
-    padding-block: 112px 88px;
+    padding-block: 88px 96px;
+  }
+}
+
+// Faisceaux de lumière qui se balancent
+.projecteur {
+  position: absolute;
+  top: -10%;
+  width: 34%;
+  height: 130%;
+  background: linear-gradient(180deg, rgba(255, 231, 160, 0.22), transparent 75%);
+  clip-path: polygon(46% 0, 54% 0, 100% 100%, 0 100%);
+  filter: blur(10px);
+  transform-origin: 50% 0;
+  pointer-events: none;
+  animation: balayer 9s ease-in-out infinite alternate;
+
+  &--gauche {
+    left: 2%;
+    transform: rotate(-18deg);
+  }
+
+  &--droite {
+    right: 2%;
+    transform: rotate(18deg);
+    animation-direction: alternate-reverse;
+  }
+}
+
+@keyframes balayer {
+  from {
+    rotate: -10deg;
+  }
+  to {
+    rotate: 10deg;
   }
 }
 
 .hero__contenu {
-  max-width: 1200px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
-.hero__surtitre {
-  margin: 0 0 12px;
-  color: var(--cs-or);
-  font-size: 0.78rem;
+.badge {
+  margin-bottom: 28px;
+  padding: 8px 18px;
+  border-radius: 999px;
+  background: rgba(245, 197, 66, 0.12);
+  border: 1px solid rgba(245, 197, 66, 0.35);
+  color: var(--cs-or-clair);
   font-weight: 600;
+  font-size: 0.92rem;
+}
+
+.fronton {
+  position: relative;
+  max-width: 100%;
+  padding: 28px clamp(20px, 5vw, 56px) 32px;
+  border-radius: 24px;
+  background: linear-gradient(180deg, #1f180b, #120e07);
+  box-shadow:
+    0 0 0 2px var(--cs-or-fonce),
+    0 20px 60px rgba(0, 0, 0, 0.6),
+    0 0 80px rgba(245, 197, 66, 0.15);
+
+  // Rangée d'ampoules qui clignotent tout autour
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 8px;
+    border-radius: 18px;
+    border: 6px dotted var(--cs-or-clair);
+    filter: drop-shadow(0 0 4px var(--cs-or)) drop-shadow(0 0 10px rgba(245, 197, 66, 0.6));
+    animation: ampoules 1.4s steps(2, jump-none) infinite;
+    pointer-events: none;
+  }
+}
+
+@keyframes ampoules {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.45;
+  }
+}
+
+.fronton__surtitre {
+  margin: 0 0 10px;
+  color: var(--cs-or);
+  font-size: 0.75rem;
+  font-weight: 700;
   letter-spacing: 0.3em;
   text-transform: uppercase;
 }
 
-.hero__titre {
-  max-width: 14ch;
-  font-size: clamp(2.2rem, 7vw, 4.2rem);
+.fronton__titre {
+  font-size: clamp(2.2rem, 7vw, 4.4rem);
+  font-style: italic;
+  background: var(--cs-degrade-or);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 2px 12px rgba(245, 197, 66, 0.35));
 }
 
 .hero__resume {
-  max-width: 56ch;
-  margin: 20px 0 32px;
-  color: var(--cs-texte-doux);
-  font-size: 1.02rem;
+  max-width: 58ch;
+  margin: 32px 0;
+  color: #d9d1c2;
+  font-size: 1.05rem;
 }
 
 .hero__actions {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 12px;
 }
 
 .genres {
   display: flex;
-  gap: 8px;
-  margin-bottom: 32px;
+  gap: 10px;
+  margin-bottom: 36px;
   overflow-x: auto;
-  padding-bottom: 4px;
+  padding: 4px 2px 8px;
   scrollbar-width: none;
 }

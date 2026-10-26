@@ -44,13 +44,13 @@
           @for (s of siegesChoisis(); track s) {
             <span class="ticket">{{ s }}</span>
           } @empty {
-            <span class="texte-doux">Aucun siège sélectionné</span>
+            <span class="texte-doux">Cliquez sur un siège pour le choisir 👆</span>
           }
         </div>
       </div>
 
       <button type="button" class="bouton-or" [disabled]="!siegesChoisis().length" (click)="reserver()">
-        <span class="material-symbols-outlined">confirmation_number</span>
+        <span class="material-symbols-outlined">local_activity</span>
         @if (siegesChoisis().length) {
           Réserver {{ siegesChoisis().length }} place{{ siegesChoisis().length > 1 ? 's' : '' }}
         } @else {

@@ -1,23 +1,26 @@
-// Thème Ciné Star : noir et doré.
+// Thème Ciné Star : noir et doré, ambiance soirée de gala.
 // Les couleurs sont définies une seule fois ici (variables --cs-*) et réutilisées
 // par tous les composants. Angular Material est aligné dessus via theme-overrides.
 @use '@angular/material' as mat;
 
 :root {
-  --cs-noir: #0a0a0b;
-  --cs-noir-2: #131315;
-  --cs-noir-3: #1c1c1f;
-  --cs-bordure: #2a2a2e;
-  --cs-texte: #f3efe6;
-  --cs-texte-doux: #a8a29a;
-  --cs-or: #d4af37;
-  --cs-or-clair: #f1d98a;
-  --cs-or-fonce: #9c7a1c;
-  --cs-degrade-or: linear-gradient(135deg, var(--cs-or-clair) 0%, var(--cs-or) 45%, var(--cs-or-fonce) 100%);
-  --cs-rouge: #e0565b;
-  --cs-rayon: 12px;
-  --cs-police-titre: 'Cinzel', Georgia, serif;
-  --cs-police: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --cs-noir: #09080a;
+  --cs-noir-2: #141215;
+  --cs-noir-3: #1e1b1f;
+  --cs-bordure: #2d2a2f;
+  --cs-texte: #fbf6ea;
+  --cs-texte-doux: #b3aa9c;
+  --cs-or: #f5c542;
+  --cs-or-clair: #ffe7a0;
+  --cs-or-fonce: #b8860b;
+  --cs-ambre: #ff9f1c;
+  --cs-champagne: #fff4d6;
+  --cs-degrade-or: linear-gradient(120deg, #fff1b8 0%, #f5c542 35%, #e0a526 65%, #ffd76a 100%);
+  --cs-lueur: 0 0 24px rgba(245, 197, 66, 0.45);
+  --cs-rouge: #ff6b6b;
+  --cs-rayon: 18px;
+  --cs-police-titre: 'Fraunces', Georgia, serif;
+  --cs-police: 'DM Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 }
 
 html {
@@ -30,25 +33,26 @@ html {
         primary: mat.$yellow-palette,
         tertiary: mat.$orange-palette,
       ),
-      typography: Inter,
+      typography: 'DM Sans',
       density: 0,
     )
   );
   @include mat.theme-overrides(
     (
-      primary: #d4af37,
-      on-primary: #1a1405,
-      primary-container: #3a2f0f,
-      on-primary-container: #f1d98a,
-      surface: #0a0a0b,
-      on-surface: #f3efe6,
-      on-surface-variant: #a8a29a,
-      surface-container: #131315,
-      surface-container-high: #1c1c1f,
-      surface-container-highest: #232327,
-      outline: #3a3a3f,
-      outline-variant: #2a2a2e,
-      error: #e0565b,
+      primary: #f5c542,
+      on-primary: #1f1500,
+      primary-container: #3d2f08,
+      on-primary-container: #ffe7a0,
+      surface: #09080a,
+      on-surface: #fbf6ea,
+      on-surface-variant: #b3aa9c,
+      surface-container: #141215,
+      surface-container-high: #1e1b1f,
+      surface-container-highest: #262228,
+      outline: #4a4448,
+      outline-variant: #2d2a2f,
+      error: #ff6b6b,
+      corner-extra-small: 12px,
     )
   );
 }
@@ -56,7 +60,11 @@ html {
 body {
   margin: 0;
   min-height: 100%;
-  background: var(--cs-noir);
+  background:
+    radial-gradient(1200px 600px at 85% -10%, rgba(245, 197, 66, 0.1), transparent 60%),
+    radial-gradient(900px 500px at -10% 110%, rgba(255, 159, 28, 0.07), transparent 60%),
+    var(--cs-noir);
+  background-attachment: fixed;
   color: var(--cs-texte);
   font-family: var(--cs-police);
   font-size: 15px;
@@ -64,10 +72,43 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+// Ciel étoilé discret qui scintille derrière toute l'app
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    radial-gradient(1.5px 1.5px at 12% 18%, rgba(255, 231, 160, 0.7), transparent),
+    radial-gradient(1px 1px at 28% 72%, rgba(255, 231, 160, 0.5), transparent),
+    radial-gradient(1.5px 1.5px at 47% 33%, rgba(255, 231, 160, 0.6), transparent),
+    radial-gradient(1px 1px at 63% 88%, rgba(255, 231, 160, 0.5), transparent),
+    radial-gradient(2px 2px at 78% 24%, rgba(255, 231, 160, 0.6), transparent),
+    radial-gradient(1px 1px at 91% 61%, rgba(255, 231, 160, 0.5), transparent),
+    radial-gradient(1.5px 1.5px at 6% 52%, rgba(255, 231, 160, 0.4), transparent),
+    radial-gradient(1px 1px at 37% 9%, rgba(255, 231, 160, 0.5), transparent);
+  animation: scintiller 5s ease-in-out infinite alternate;
+}
+
+@keyframes scintiller {
+  from {
+    opacity: 0.35;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 *,
 *::before,
 *::after {
   box-sizing: border-box;
+}
+
+::selection {
+  background: var(--cs-or);
+  color: #1f1500;
 }
 
 a {
@@ -84,9 +125,9 @@ h1,
 h2,
 h3 {
   font-family: var(--cs-police-titre);
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  line-height: 1.2;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
   margin: 0;
 }
 
@@ -104,29 +145,46 @@ h3 {
 }
 
 .page {
-  padding-block: 32px 64px;
+  padding-block: 40px 72px;
 }
 
+// Titre de section avec une petite étoile et un filet doré
 .titre-section {
   display: flex;
   align-items: center;
   gap: 12px;
-  font-size: 1.5rem;
+  font-size: 1.75rem;
   margin-bottom: 24px;
+
+  &::before {
+    content: '✦';
+    color: var(--cs-or);
+    font-size: 1.1rem;
+    text-shadow: var(--cs-lueur);
+  }
 
   &::after {
     content: '';
     flex: 1;
-    height: 1px;
-    background: linear-gradient(90deg, var(--cs-or-fonce), transparent);
+    height: 2px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, var(--cs-or), rgba(245, 197, 66, 0.15) 40%, transparent);
   }
 }
 
 .texte-or {
   background: var(--cs-degrade-or);
+  background-size: 200% auto;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  animation: reflet-or 6s linear infinite;
+}
+
+@keyframes reflet-or {
+  to {
+    background-position: 200% center;
+  }
 }
 
 .texte-doux {
@@ -136,16 +194,16 @@ h3 {
 .grille-films {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 24px 16px;
+  gap: 28px 16px;
 
   @media (min-width: 768px) {
     grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
-    gap: 32px 24px;
+    gap: 36px 24px;
   }
 }
 
 .carte {
-  background: var(--cs-noir-2);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent 40%), var(--cs-noir-2);
   border: 1px solid var(--cs-bordure);
   border-radius: var(--cs-rayon);
 }
@@ -156,44 +214,82 @@ h3 {
   padding: 64px 16px;
   color: var(--cs-texte-doux);
 
-  .material-symbols-outlined {
-    font-size: 48px;
-    color: var(--cs-or-fonce);
+  .emoji {
+    display: block;
+    font-size: 3.2rem;
     margin-bottom: 12px;
+    animation: flotter 3s ease-in-out infinite;
   }
 
   p {
-    margin: 0 0 20px;
+    margin: 0 0 24px;
+    font-size: 1.05rem;
   }
 }
 
-// Bouton doré principal (en complément des boutons Material)
+@keyframes flotter {
+  50% {
+    transform: translateY(-8px) rotate(-4deg);
+  }
+}
+
+// ---------- Boutons ----------
+
+// Bouton doré principal, avec un reflet qui passe au survol
 .bouton-or {
+  position: relative;
+  overflow: hidden;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 12px 24px;
+  padding: 13px 26px;
   border: none;
   border-radius: 999px;
   background: var(--cs-degrade-or);
-  color: #1a1405;
-  font: 600 0.95rem var(--cs-police);
-  letter-spacing: 0.03em;
+  color: #1f1500;
+  font: 700 0.95rem var(--cs-police);
+  letter-spacing: 0.01em;
   cursor: pointer;
+  box-shadow:
+    0 4px 18px rgba(245, 197, 66, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
   transition:
-    transform 0.15s ease,
+    transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
     box-shadow 0.2s ease,
     opacity 0.2s;
 
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -80%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.7), transparent);
+    transform: skewX(-20deg);
+    transition: left 0.6s ease;
+  }
+
   &:hover:not(:disabled) {
-    transform: translateY(-1px);
-    box-shadow: 0 6px 24px rgba(212, 175, 55, 0.35);
+    transform: translateY(-2px) scale(1.03);
+    box-shadow:
+      0 10px 32px rgba(245, 197, 66, 0.45),
+      inset 0 1px 0 rgba(255, 255, 255, 0.5);
+
+    &::after {
+      left: 130%;
+    }
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.97);
   }
 
   &:disabled {
-    opacity: 0.4;
+    opacity: 0.35;
     cursor: not-allowed;
+    box-shadow: none;
   }
 }
 
@@ -202,20 +298,22 @@ h3 {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 10px 20px;
-  border: 1px solid var(--cs-or-fonce);
+  padding: 11px 22px;
+  border: 1.5px solid rgba(245, 197, 66, 0.55);
   border-radius: 999px;
-  background: transparent;
-  color: var(--cs-or);
-  font: 500 0.9rem var(--cs-police);
+  background: rgba(245, 197, 66, 0.04);
+  color: var(--cs-or-clair);
+  font: 600 0.92rem var(--cs-police);
   cursor: pointer;
   transition:
     background 0.2s,
-    border-color 0.2s;
+    border-color 0.2s,
+    transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 
   &:hover {
-    background: rgba(212, 175, 55, 0.08);
+    background: rgba(245, 197, 66, 0.12);
     border-color: var(--cs-or);
+    transform: translateY(-2px);
   }
 }
 
@@ -223,26 +321,45 @@ h3 {
 .pastille {
   display: inline-flex;
   align-items: center;
-  padding: 6px 16px;
-  border: 1px solid var(--cs-bordure);
+  gap: 6px;
+  padding: 8px 16px;
+  border: 1.5px solid var(--cs-bordure);
   border-radius: 999px;
   background: var(--cs-noir-2);
   color: var(--cs-texte-doux);
-  font: 500 0.85rem var(--cs-police);
+  font: 600 0.88rem var(--cs-police);
   white-space: nowrap;
   cursor: pointer;
-  transition: all 0.2s;
+  transition:
+    all 0.2s,
+    transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 
   &:hover {
     border-color: var(--cs-or-fonce);
     color: var(--cs-texte);
+    transform: translateY(-2px);
   }
 
   &.active {
     background: var(--cs-degrade-or);
     border-color: transparent;
-    color: #1a1405;
+    color: #1f1500;
+    box-shadow: 0 4px 16px rgba(245, 197, 66, 0.35);
   }
+}
+
+// Petit billet doré (numéro de siège)
+.ticket {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 8px;
+  background: rgba(245, 197, 66, 0.12);
+  border: 1px dashed var(--cs-or);
+  color: var(--cs-or-clair);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
 }
 
 .material-symbols-outlined {
@@ -260,29 +377,49 @@ h3 {
   min-height: calc(100dvh - 160px);
   display: grid;
   place-items: center;
-  padding: 40px 16px;
-  background: radial-gradient(ellipse at 50% 0%, rgba(212, 175, 55, 0.14), transparent 60%);
+  padding: 48px 16px;
 }
 
+// Carte avec une bordure dorée qui tourne doucement
 .carte-auth {
+  position: relative;
   width: 100%;
   max-width: 420px;
   display: flex;
   flex-direction: column;
   gap: 4px;
-  padding: 36px 28px 28px;
-  border: 1px solid rgba(212, 175, 55, 0.3);
-  border-radius: 16px;
+  padding: 40px 28px 28px;
+  border-radius: 24px;
   background: var(--cs-noir-2);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
   text-align: center;
+  isolation: isolate;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    z-index: -1;
+    border-radius: 26px;
+    background: conic-gradient(from var(--angle), var(--cs-or), transparent 30%, var(--cs-ambre) 50%, transparent 70%, var(--cs-or));
+    animation: tourner-bordure 6s linear infinite;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: 24px;
+    background: var(--cs-noir-2);
+  }
 
   h1 {
-    font-size: 1.8rem;
+    font-size: 2rem;
   }
 
   > p {
-    margin: 4px 0 24px;
+    margin: 6px 0 28px;
   }
 
   .mat-mdc-form-field {
@@ -301,14 +438,40 @@ h3 {
   }
 }
 
-.carte-auth__etoile {
-  color: var(--cs-or);
-  font-size: 1.6rem;
-  margin-bottom: 4px;
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes tourner-bordure {
+  to {
+    --angle: 360deg;
+  }
+}
+
+.carte-auth__emoji {
+  font-size: 2.4rem;
+  margin-bottom: 6px;
+  animation: flotter 3s ease-in-out infinite;
 }
 
 .carte-auth > .carte-auth__bas {
-  margin: 20px 0 0;
-  font-size: 0.9rem;
+  margin: 22px 0 0;
+  font-size: 0.92rem;
   color: var(--cs-texte-doux);
+
+  a {
+    font-weight: 700;
+  }
+}
+
+// Les animations sont coupées pour les personnes qui le demandent dans leur système
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
 }

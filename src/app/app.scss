@@ -9,7 +9,7 @@
 }
 
 .pied {
-  border-top: 1px solid var(--cs-bordure);
+  border-top: 1px solid rgba(245, 197, 66, 0.2);
   padding-block: 24px;
   font-size: 0.82rem;
 }
@@ -23,7 +23,6 @@
 }
 
 .pied__logo {
-  font: 700 1rem var(--cs-police-titre);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font: italic 700 1.2rem var(--cs-police-titre);
+  color: var(--cs-or);
 }

@@ -3,7 +3,7 @@
   padding-block: 40px;
   background:
     linear-gradient(180deg, rgba(10, 10, 11, 0.55), var(--cs-noir) 95%),
-    var(--fond, radial-gradient(ellipse at 70% 0%, rgba(212, 175, 55, 0.2), transparent 60%)),
+    var(--fond, radial-gradient(ellipse at 70% 0%, rgba(245, 197, 66, 0.25), transparent 60%)),
     #120f07;
   background-size: cover;
   background-position: center top;
@@ -29,8 +29,11 @@
   aspect-ratio: 2 / 3;
   border-radius: var(--cs-rayon);
   overflow: hidden;
-  border: 1px solid rgba(212, 175, 55, 0.45);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+  border: 2px solid var(--cs-or);
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.7),
+    0 0 40px rgba(245, 197, 66, 0.25);
+  transform: rotate(-2deg);
 
   @media (min-width: 768px) {
     width: 100%;
@@ -47,16 +50,17 @@
   height: 100%;
   display: grid;
   place-items: center;
-  background: linear-gradient(180deg, var(--cs-noir-3), var(--cs-noir));
+  background:
+    radial-gradient(circle at 50% 40%, rgba(245, 197, 66, 0.35), transparent 60%),
+    linear-gradient(160deg, #1f1a10, var(--cs-noir) 85%);
   color: var(--cs-or);
-
-  .material-symbols-outlined {
-    font-size: 56px;
-  }
+  font-size: 4rem;
+  text-shadow: var(--cs-lueur);
 }
 
 h1 {
-  font-size: clamp(1.9rem, 5vw, 3rem);
+  font-size: clamp(2rem, 5.5vw, 3.4rem);
+  font-style: italic;
 }
 
 .meta {
@@ -148,12 +152,15 @@ h1 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-width: 76px;
-  padding: 8px 14px;
-  border: 1px solid var(--cs-or-fonce);
-  border-radius: 8px;
+  min-width: 80px;
+  padding: 9px 16px;
+  border: 1.5px solid rgba(245, 197, 66, 0.5);
+  border-radius: 14px;
+  background: rgba(245, 197, 66, 0.05);
   color: var(--cs-texte);
-  transition: all 0.2s;
+  transition:
+    all 0.2s,
+    transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
 
   small {
     color: var(--cs-or);
@@ -164,10 +171,12 @@ h1 {
   &:hover {
     background: var(--cs-degrade-or);
     border-color: transparent;
-    color: #1a1405;
+    color: #1f1500;
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 24px rgba(245, 197, 66, 0.4);
 
     small {
-      color: #1a1405;
+      color: #1f1500;
     }
   }
 }
@@ -197,9 +206,11 @@ h1 {
   overflow: hidden;
   display: grid;
   place-items: center;
-  border: 2px solid var(--cs-or-fonce);
-  background: var(--cs-noir-3);
-  color: var(--cs-texte-doux);
+  border: 3px solid transparent;
+  background:
+    linear-gradient(var(--cs-noir-3), var(--cs-noir-3)) padding-box,
+    var(--cs-degrade-or) border-box;
+  color: var(--cs-or);
 
   img {
     width: 100%;
@@ -248,7 +259,7 @@ h1 {
   place-items: center;
   border-radius: 50%;
   background: var(--cs-degrade-or);
-  color: #1a1405;
+  color: #1f1500;
   font-weight: 700;
   text-transform: uppercase;
 }

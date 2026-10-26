@@ -15,4 +15,7 @@ export class MovieCard {
 
   protected affiche = computed(() => tmdbImage(this.movie().poster_path, 'w342'));
   protected annee = computed(() => this.movie().release_date?.slice(0, 4));
+
+  // Variante de couleur de l'affiche par défaut, pour que la grille ne soit pas uniforme
+  protected teinte = computed(() => this.movie().id % 4);
 }

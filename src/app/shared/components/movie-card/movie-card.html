@@ -4,8 +4,8 @@
       <img [src]="src" [alt]="'Affiche de ' + movie().title" loading="lazy" />
     } @else {
       <!-- Affiche par défaut quand TMDB n'a pas d'image -->
-      <div class="affiche-vide">
-        <span class="material-symbols-outlined">movie</span>
+      <div class="affiche-vide" [attr.data-teinte]="teinte()">
+        <span class="affiche-vide__etoile">★</span>
         <span>{{ movie().title }}</span>
       </div>
     }

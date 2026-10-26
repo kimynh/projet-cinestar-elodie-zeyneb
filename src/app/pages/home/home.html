@@ -1,12 +1,22 @@
 @if (vedette(); as film) {
   <section class="hero">
+    <!-- Deux projecteurs qui balaient le fond -->
+    <div class="projecteur projecteur--gauche"></div>
+    <div class="projecteur projecteur--droite"></div>
+
     <div class="container hero__contenu">
-      <p class="hero__surtitre">À l'affiche cette semaine</p>
-      <h1 class="hero__titre">{{ film.title }}</h1>
+      <span class="badge">🍿 Ce soir, on se fait une toile ?</span>
+
+      <!-- Fronton de cinéma avec ses ampoules -->
+      <div class="fronton">
+        <p class="fronton__surtitre">✦ À l'affiche cette semaine ✦</p>
+        <h1 class="fronton__titre">{{ film.title }}</h1>
+      </div>
+
       <p class="hero__resume">{{ film.overview }}</p>
       <div class="hero__actions">
         <a class="bouton-or" [routerLink]="['/film', film.id]">
-          <span class="material-symbols-outlined">confirmation_number</span> Réserver
+          <span class="material-symbols-outlined">local_activity</span> Réserver mes places
         </a>
         <a class="bouton-contour" [routerLink]="['/film', film.id]">Voir la fiche</a>
       </div>
@@ -19,7 +29,7 @@
 
   <div class="genres" role="group" aria-label="Filtrer par genre">
     <button type="button" class="pastille" [class.active]="genreChoisi() === null" (click)="genreChoisi.set(null)">
-      Tous
+      🎬 Tous
     </button>
     @for (genre of genres(); track genre.id) {
       <button
@@ -28,7 +38,7 @@
         [class.active]="genreChoisi() === genre.id"
         (click)="genreChoisi.set(genre.id)"
       >
-        {{ genre.name }}
+        {{ emojis[genre.id] ?? '🎬' }} {{ genre.name }}
       </button>
     }
   </div>
@@ -41,7 +51,7 @@
     </div>
   } @else {
     <div class="etat-vide">
-      <span class="material-symbols-outlined">theaters</span>
+      <span class="emoji">🎞️</span>
       <p>Aucun film de ce genre à l'affiche pour le moment.</p>
     </div>
   }
