@@ -1,0 +1,23 @@
+{
+  "users": [],
+  "cinemas": [
+    { "id": 1, "nom": "Ciné Star Bastille", "ville": "Paris", "adresse": "12 rue de la Roquette" }
+  ],
+  "salles": [
+    { "id": 1, "cinemaId": 1, "nom": "Salle 3", "rangees": 8, "siegesParRangee": 12 }
+  ],
+  "seances": [
+    {
+      "id": 1,
+      "tmdbId": 1184918,
+      "cinemaId": 1,
+      "salleId": 1,
+      "date": "2026-12-02",
+      "heure": "20:30",
+      "version": "VOSTFR",
+      "siegesPris": ["A1", "A2", "D7"]
+    }
+  ],
+  "reservations": [],
+  "favoris": []
+}
