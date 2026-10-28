@@ -50,7 +50,7 @@ export class Register {
           err.status === 400
             ? 'Cet e-mail est déjà utilisé.'
             : err.status === 0
-              ? 'Serveur injoignable. Vérifiez que « npm run api » est lancé.'
+              ? 'Serveur injoignable. Lancez l’app avec « npm start ».'
               : 'Impossible de créer le compte. Réessayez.',
         );
       },

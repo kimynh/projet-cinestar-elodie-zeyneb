@@ -20,7 +20,11 @@
       <mat-error>Au moins 6 caractères</mat-error>
     </mat-form-field>
 
-    <button type="submit" class="bouton-or" [disabled]="form.invalid">Se connecter</button>
+    @if (erreur()) {
+      <p class="erreur">{{ erreur() }}</p>
+    }
+
+    <button type="submit" class="bouton-or" [disabled]="form.invalid || enCours()">Se connecter</button>
 
     <p class="carte-auth__bas">Pas encore de compte ? <a routerLink="/inscription">Créer un compte</a></p>
   </form>

@@ -23,6 +23,16 @@ export class AuthService {
       .pipe(tap((rep) => this.enregistrerSession(rep)));
   }
 
+  login(email: string, password: string) {
+    return this.http
+      .post<AuthReponse>(`${environment.apiUrl}/login`, { email, password })
+      .pipe(tap((rep) => this.enregistrerSession(rep)));
+  }
+
+  get token(): string | null {
+    return localStorage.getItem('token');
+  }
+
   logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
