@@ -24,6 +24,17 @@ export class Register {
 
   protected erreur = signal('');
   protected enCours = signal(false);
+  protected reussi = signal(false);
+
+  // 28 popcorns, chacun avec sa position, sa hauteur de saut, sa rotation et sa vitesse
+  protected popcorns = Array.from({ length: 28 }, () => ({
+    x: Math.random() * 95,
+    hauteur: 35 + Math.random() * 45,
+    rotation: (Math.random() - 0.5) * 540,
+    delai: Math.random() * 1.2,
+    duree: 1.1 + Math.random() * 0.9,
+    taille: 1.6 + Math.random() * 1.8,
+  }));
 
   protected form = this.fb.nonNullable.group(
     {
@@ -43,7 +54,11 @@ export class Register {
     this.enCours.set(true);
 
     this.auth.register(email, password).subscribe({
-      next: () => this.router.navigateByUrl('/'),
+      next: () => {
+        // Les popcorns sautent 3 secondes, puis on va à l'accueil
+        this.reussi.set(true);
+        setTimeout(() => this.router.navigateByUrl('/'), 3000);
+      },
       error: (err) => {
         this.enCours.set(false);
         this.erreur.set(
