@@ -1,8 +1,9 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { AbstractControl, FormBuilder, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { AuthService } from '../../core/services/auth.service';
 
 // Vérifie que les deux mots de passe sont identiques
 function memesMotsDePasse(group: AbstractControl): ValidationErrors | null {
@@ -18,6 +19,11 @@ function memesMotsDePasse(group: AbstractControl): ValidationErrors | null {
 })
 export class Register {
   private fb = inject(FormBuilder);
+  private auth = inject(AuthService);
+  private router = inject(Router);
+
+  protected erreur = signal('');
+  protected enCours = signal(false);
 
   protected form = this.fb.nonNullable.group(
     {
@@ -29,6 +35,25 @@ export class Register {
   );
 
   protected valider() {
-    // TODO (P1) : AuthService.register(), puis connexion automatique
+    if (this.form.invalid) {
+      return;
+    }
+    const { email, password } = this.form.getRawValue();
+    this.erreur.set('');
+    this.enCours.set(true);
+
+    this.auth.register(email, password).subscribe({
+      next: () => this.router.navigateByUrl('/'),
+      error: (err) => {
+        this.enCours.set(false);
+        this.erreur.set(
+          err.status === 400
+            ? 'Cet e-mail est déjà utilisé.'
+            : err.status === 0
+              ? 'Serveur injoignable. Vérifiez que « npm run api » est lancé.'
+              : 'Impossible de créer le compte. Réessayez.',
+        );
+      },
+    });
   }
 }

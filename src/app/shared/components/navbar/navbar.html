@@ -25,10 +25,11 @@
       <a routerLink="/mes-reservations" routerLinkActive="actif">Mes réservations</a>
       <a routerLink="/mes-favoris" routerLinkActive="actif">Mes favoris</a>
       @if (connecte()) {
-        <button type="button" class="bouton-contour">
+        <button type="button" class="bouton-contour" (click)="deconnexion()">
           <span class="material-symbols-outlined">logout</span> Déconnexion
         </button>
       } @else {
+        <a routerLink="/inscription" class="bouton-contour">Inscription</a>
         <a routerLink="/connexion" class="bouton-or">Connexion</a>
       }
     </nav>

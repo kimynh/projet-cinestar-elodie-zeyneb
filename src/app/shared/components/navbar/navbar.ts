@@ -1,5 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -9,12 +10,17 @@ import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 })
 export class Navbar {
   private router = inject(Router);
+  private auth = inject(AuthService);
 
   // Menu déroulant sur mobile
   protected menuOuvert = signal(false);
 
-  // TODO (P1) : remplacer par le signal currentUser de AuthService
-  protected connecte = signal(false);
+  protected connecte = this.auth.estConnecte;
+
+  protected deconnexion() {
+    this.auth.logout();
+    this.router.navigateByUrl('/');
+  }
 
   protected rechercher(texte: string) {
     const q = texte.trim();

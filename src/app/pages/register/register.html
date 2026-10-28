@@ -31,7 +31,11 @@
       <p class="erreur">Les mots de passe ne correspondent pas.</p>
     }
 
-    <button type="submit" class="bouton-or" [disabled]="form.invalid">Créer mon compte</button>
+    @if (erreur()) {
+      <p class="erreur">{{ erreur() }}</p>
+    }
+
+    <button type="submit" class="bouton-or" [disabled]="form.invalid || enCours()">Créer mon compte</button>
 
     <p class="carte-auth__bas">Déjà un compte ? <a routerLink="/connexion">Se connecter</a></p>
   </form>
