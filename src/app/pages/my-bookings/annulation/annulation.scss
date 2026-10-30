@@ -1,0 +1,132 @@
+.annulation {
+  width: min(440px, calc(100% - 32px));
+  padding: 0;
+  border: 0;
+  border-radius: var(--cs-rayon);
+  background: transparent;
+  color: var(--cs-texte);
+
+  &::backdrop {
+    background: rgba(9, 8, 10, 0.8);
+    backdrop-filter: blur(4px);
+  }
+}
+
+.annulation__carte {
+  padding: 32px 24px 24px;
+  border-radius: var(--cs-rayon);
+  background:
+    radial-gradient(circle at 50% 0%, rgba(255, 107, 107, 0.14), transparent 60%),
+    var(--cs-noir-2);
+  border: 1.5px solid rgba(245, 197, 66, 0.35);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+  text-align: center;
+  animation: arriver 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.3) both;
+
+  h2 {
+    margin: 12px 0 16px;
+    font-size: 1.7rem;
+    font-style: italic;
+  }
+}
+
+@keyframes arriver {
+  from {
+    opacity: 0;
+    scale: 0.9;
+  }
+}
+
+// Les ciseaux font mine de couper
+.ciseaux {
+  display: inline-block;
+  font-size: 2.6rem;
+  animation: couper 0.9s ease-in-out infinite alternate;
+}
+
+@keyframes couper {
+  from {
+    rotate: -12deg;
+  }
+  to {
+    rotate: 12deg;
+    translate: 6px 0;
+  }
+}
+
+.resume {
+  margin: 0 0 12px;
+  line-height: 1.6;
+
+  strong {
+    font-family: var(--cs-police-titre);
+    font-size: 1.15rem;
+    font-style: italic;
+    color: var(--cs-or);
+  }
+}
+
+.capitale {
+  display: inline-block;
+
+  &::first-letter {
+    text-transform: uppercase;
+  }
+}
+
+.sieges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.texte-doux {
+  margin: 0 0 20px;
+  font-size: 0.9rem;
+}
+
+.erreur {
+  margin: 0 0 16px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: rgba(255, 107, 107, 0.1);
+  border: 1px solid rgba(255, 107, 107, 0.35);
+  color: var(--cs-rouge);
+  font-size: 0.9rem;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.bouton-annuler {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 11px 20px;
+  border: 1.5px solid rgba(255, 107, 107, 0.6);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--cs-rouge);
+  font: 600 0.95rem var(--cs-police);
+  cursor: pointer;
+  transition: background 0.2s;
+
+  &:hover:not(:disabled) {
+    background: rgba(255, 107, 107, 0.12);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: wait;
+  }
+
+  .material-symbols-outlined {
+    font-size: 18px;
+  }
+}

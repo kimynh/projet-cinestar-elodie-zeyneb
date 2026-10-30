@@ -11,6 +11,7 @@ import { MyBookings } from './my-bookings';
 describe('MyBookings', () => {
   let fixture: ComponentFixture<MyBookings>;
   let httpMock: HttpTestingController;
+  const annuler = vi.fn(() => of(undefined));
 
   const reservation: Reservation = {
     id: 7,
@@ -32,6 +33,19 @@ describe('MyBookings', () => {
     },
   };
 
+  // jsdom ne sait pas ouvrir/fermer une <dialog> : on imite le comportement du navigateur
+  beforeAll(() => {
+    HTMLDialogElement.prototype.showModal ??= function (this: HTMLDialogElement) {
+      this.setAttribute('open', '');
+    };
+    HTMLDialogElement.prototype.close ??= function (this: HTMLDialogElement) {
+      this.removeAttribute('open');
+      this.dispatchEvent(new Event('close'));
+    };
+  });
+
+  afterEach(() => vi.useRealTimers());
+
   async function creer(reservations: Reservation[]) {
     await TestBed.configureTestingModule({
       imports: [MyBookings],
@@ -39,7 +53,7 @@ describe('MyBookings', () => {
         provideRouter([]),
         provideHttpClient(),
         provideHttpClientTesting(),
-        { provide: ReservationService, useValue: { getMesReservations: () => of(reservations) } },
+        { provide: ReservationService, useValue: { getMesReservations: () => of(reservations), annuler } },
       ],
     }).compileComponents();
 
@@ -64,7 +78,6 @@ describe('MyBookings', () => {
     await fixture.whenStable();
 
     const dialog: HTMLDialogElement = fixture.nativeElement.querySelector('dialog');
-    dialog.showModal ??= () => dialog.setAttribute('open', '');
     fixture.nativeElement.querySelector('.voir-billet').click();
     fixture.detectChanges();
 
@@ -77,5 +90,36 @@ describe('MyBookings', () => {
     await fixture.whenStable();
 
     expect(fixture.nativeElement.querySelector('.etat-vide').textContent).toContain('Aucune réservation');
+  });
+
+  it('annule un billet après confirmation et le retire de la liste', async () => {
+    vi.useFakeTimers();
+    await creer([reservation]);
+    httpMock.expectOne((r) => r.url.endsWith('/movie/99')).flush({ id: 99, title: 'Dune', poster_path: null });
+    fixture.detectChanges();
+
+    const page: HTMLElement = fixture.nativeElement;
+    (page.querySelector('.annuler') as HTMLButtonElement).click();
+    fixture.detectChanges();
+    expect(page.querySelector('app-annulation')?.textContent).toContain('Annuler ce billet ?');
+
+    (page.querySelector('.bouton-annuler') as HTMLButtonElement).click();
+    fixture.detectChanges();
+
+    expect(annuler).toHaveBeenCalledWith(reservation);
+    expect(page.querySelector('.toast')?.textContent).toContain('E5, E6 sont à nouveau libres');
+
+    vi.advanceTimersByTime(600);
+    fixture.detectChanges();
+    expect(page.querySelector('article.billet')).toBeNull();
+  });
+
+  it('ne propose pas d’annuler une séance passée', async () => {
+    await creer([{ ...reservation, seance: { ...reservation.seance!, date: '2020-01-01' } }]);
+    httpMock.expectOne((r) => r.url.endsWith('/movie/99')).flush({ id: 99, title: 'Dune', poster_path: null });
+    await fixture.whenStable();
+
+    expect(fixture.nativeElement.querySelector('.annuler')).toBeNull();
+    expect(fixture.nativeElement.textContent).toContain('Séance passée');
   });
 });

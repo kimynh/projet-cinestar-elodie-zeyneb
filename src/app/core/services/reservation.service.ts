@@ -53,6 +53,23 @@ export class ReservationService {
     );
   }
 
+  // Annule une réservation en 2 étapes :
+  // 1. on supprime la réservation
+  // 2. on relit la séance et on libère ses sièges (relue juste avant, pour ne pas
+  //    effacer les sièges que d'autres personnes auraient réservés entre-temps)
+  annuler(reservation: Reservation) {
+    return this.http.delete<void>(`${environment.apiUrl}/reservations/${reservation.id}`).pipe(
+      switchMap(() => this.seances.getById(reservation.seanceId)),
+      switchMap((seance) =>
+        this.seances.majSiegesPris(
+          seance.id,
+          seance.siegesPris.filter((s) => !reservation.sieges.includes(s)),
+        ),
+      ),
+      map(() => undefined),
+    );
+  }
+
   // Réservations de l'utilisateur connecté, avec leur séance, salle et cinéma,
   // de la plus proche à la plus lointaine
   getMesReservations() {

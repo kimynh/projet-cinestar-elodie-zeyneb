@@ -1,0 +1,45 @@
+<dialog
+  #fenetre
+  class="annulation"
+  aria-labelledby="titre-annulation"
+  (close)="fermer.emit()"
+  (cancel)="bloquerEchap($event)"
+>
+  @let r = reservation();
+  @let seance = r.seance!;
+  <div class="annulation__carte">
+    <div class="ciseaux" aria-hidden="true">✂️</div>
+    <h2 id="titre-annulation">Annuler ce billet ?</h2>
+
+    <p class="resume">
+      <strong>{{ film()?.title ?? 'Votre film' }}</strong><br />
+      <span class="capitale">{{ seance.date | date: 'EEEE d MMMM' }}</span> · {{ seance.heure }} ·
+      {{ seance.salle?.nom }}
+    </p>
+
+    <div class="sieges">
+      @for (s of r.sieges; track s) {
+        <span class="ticket">{{ s }}</span>
+      }
+    </div>
+
+    <p class="texte-doux">
+      {{ r.sieges.length > 1 ? 'Ces places seront remises' : 'Cette place sera remise' }} en vente. Cette action est
+      définitive.
+    </p>
+
+    @if (erreur()) {
+      <p class="erreur" role="alert">L’annulation n’a pas pu aboutir. Réessayez dans un instant.</p>
+    }
+
+    <div class="actions">
+      <button type="button" class="bouton-or" [disabled]="enCours()" (click)="fenetre.close()" autofocus>
+        Garder mon billet
+      </button>
+      <button type="button" class="bouton-annuler" [disabled]="enCours()" (click)="confirmer()">
+        <span class="material-symbols-outlined">content_cut</span>
+        {{ enCours() ? 'Annulation…' : 'Oui, annuler' }}
+      </button>
+    </div>
+  </div>
+</dialog>

@@ -14,7 +14,7 @@
       @let seance = r.seance!;
       @let film = filmDe(r);
       <!-- Chaque réservation a la forme d'un billet de cinéma, avec son talon -->
-      <article class="billet">
+      <article class="billet" [class.dechire]="dechire() === r.id">
         <div class="billet__corps">
           <a class="billet__film" [routerLink]="['/film', seance.tmdbId]">
             @if (image(film?.poster_path, 'w185'); as src) {
@@ -48,9 +48,13 @@
           <button type="button" class="voir-billet" (click)="voirBillet(r)">
             <span class="material-symbols-outlined">barcode</span> Voir mon billet
           </button>
-          <button type="button" class="annuler" (click)="annuler(r)">
-            <span class="material-symbols-outlined">close</span> Annuler
-          </button>
+          @if (estPassee(r)) {
+            <span class="talon__label">Séance passée</span>
+          } @else {
+            <button type="button" class="annuler" (click)="aAnnuler.set(r)">
+              <span class="material-symbols-outlined">close</span> Annuler
+            </button>
+          }
         </div>
       </article>
     } @empty {
@@ -62,6 +66,14 @@
     }
   }
 </div>
+
+@if (aAnnuler(); as r) {
+  <app-annulation [reservation]="r" [film]="filmDe(r)" (annulee)="apresAnnulation($event)" (fermer)="aAnnuler.set(null)" />
+}
+
+@if (message(); as texte) {
+  <p class="toast" role="status">✂️ {{ texte }}</p>
+}
 
 <!-- Billet électronique à présenter à l'entrée -->
 <dialog #fenetre class="e-billet" aria-labelledby="titre-e-billet" (close)="billetOuvert.set(null)" (click)="$event.target === fenetre && fenetre.close()">

@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, signal, viewChild } from '@angular/core';
+import { Component, DestroyRef, ElementRef, inject, signal, viewChild } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { catchError, forkJoin, of } from 'rxjs';
@@ -9,10 +9,11 @@ import { TmdbService } from '../../core/services/tmdb.service';
 import { Billet } from '../../shared/components/billet/billet';
 import { Loader } from '../../shared/components/loader/loader';
 import { tmdbImage } from '../../shared/tmdb-image';
+import { Annulation } from './annulation/annulation';
 
 @Component({
   selector: 'app-my-bookings',
-  imports: [Billet, Loader, DatePipe, RouterLink],
+  imports: [Billet, Annulation, Loader, DatePipe, RouterLink],
   templateUrl: './my-bookings.html',
   styleUrl: './my-bookings.scss',
 })
@@ -30,10 +31,19 @@ export class MyBookings {
   protected billetOuvert = signal<Reservation | null>(null);
   private fenetre = viewChild.required<ElementRef<HTMLDialogElement>>('fenetre');
 
+  // Réservation pour laquelle on demande « Annuler ce billet ? »
+  protected aAnnuler = signal<Reservation | null>(null);
+  // Billet en train de se déchirer, juste avant de disparaître de la liste
+  protected dechire = signal<number | null>(null);
+  // Message affiché quelques secondes en bas de l'écran
+  protected message = signal<string | null>(null);
+  private minuteurs: ReturnType<typeof setTimeout>[] = [];
+
   protected image = tmdbImage;
 
   constructor() {
     this.charger();
+    inject(DestroyRef).onDestroy(() => this.minuteurs.forEach(clearTimeout));
   }
 
   protected charger() {
@@ -75,7 +85,24 @@ export class MyBookings {
     this.fenetre().nativeElement.showModal();
   }
 
-  protected annuler(r: Reservation) {
-    // TODO (P6) : confirmation, DELETE /reservations/:id, PATCH /seances/:id
+  // On ne peut plus annuler une séance déjà commencée
+  protected estPassee(r: Reservation) {
+    return new Date(`${r.seance!.date}T${r.seance!.heure}`) <= new Date();
+  }
+
+  protected apresAnnulation(r: Reservation) {
+    this.dechire.set(r.id);
+    const pluriel = r.sieges.length > 1;
+    this.message.set(
+      `Billet annulé : ${pluriel ? 'les places' : 'la place'} ${r.sieges.join(', ')} ${pluriel ? 'sont' : 'est'} à nouveau ${pluriel ? 'libres' : 'libre'}.`,
+    );
+    this.minuteurs.push(
+      // Le temps de l'animation de déchirure, puis le billet quitte la liste
+      setTimeout(() => {
+        this.reservations.update((liste) => liste.filter((x) => x.id !== r.id));
+        this.dechire.set(null);
+      }, 600),
+      setTimeout(() => this.message.set(null), 5000),
+    );
   }
 }

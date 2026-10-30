@@ -106,4 +106,21 @@ describe('ReservationService', () => {
 
     expect(resultat).toEqual([]);
   });
+
+  it('annuler supprime la réservation puis libère seulement ses sièges', () => {
+    let fini = false;
+    service
+      .annuler({ id: 5, userId: 3, seanceId: 7, sieges: ['C4', 'C5'], createdAt: '' })
+      .subscribe(() => (fini = true));
+
+    httpMock.expectOne({ method: 'DELETE', url: `${url}/reservations/5` }).flush({});
+    // Entre-temps, quelqu'un d'autre a réservé D1 : il doit rester pris
+    httpMock.expectOne((r) => r.url === `${url}/seances/7`).flush({ ...seance, siegesPris: ['A1', 'C4', 'C5', 'D1'] });
+
+    const patch = httpMock.expectOne({ method: 'PATCH', url: `${url}/seances/7` });
+    expect(patch.request.body).toEqual({ siegesPris: ['A1', 'D1'] });
+    patch.flush({});
+
+    expect(fini).toBe(true);
+  });
 });
