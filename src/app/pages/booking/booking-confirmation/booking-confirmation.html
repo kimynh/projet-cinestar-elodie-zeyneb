@@ -1,0 +1,33 @@
+<!-- Fenêtre de confirmation : un billet doré sous une pluie de confettis -->
+<dialog #fenetre class="confirmation" aria-labelledby="titre-confirmation" (close)="fermer.emit()">
+  <div class="confettis" aria-hidden="true">
+    @for (c of confettis; track $index) {
+      <span
+        class="confetti"
+        [style.left.%]="c.gauche"
+        [style.font-size.rem]="c.taille"
+        [style.animation-delay.s]="c.delai"
+        [style.animation-duration.s]="c.duree"
+        [style.--rotation]="c.rotation + 'deg'"
+        >{{ c.symbole }}</span
+      >
+    }
+  </div>
+
+  <div class="confirmation__contenu">
+    <div class="coche" aria-hidden="true">
+      <span class="material-symbols-outlined">check</span>
+    </div>
+    <h2 id="titre-confirmation">C’est réservé !</h2>
+    <p class="texte-doux">Installez-vous confortablement, le film vous attend 🍿</p>
+
+    <app-billet class="billet-imprime" [reservation]="reservation()" [seance]="seance()" [film]="film()" />
+
+    <div class="confirmation__actions">
+      <a class="bouton-or" routerLink="/mes-reservations" (click)="fenetre.close()" autofocus>
+        <span class="material-symbols-outlined">confirmation_number</span> Voir mes réservations
+      </a>
+      <button type="button" class="bouton-contour" (click)="fenetre.close()">Réserver d’autres places</button>
+    </div>
+  </div>
+</dialog>

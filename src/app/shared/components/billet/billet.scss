@@ -1,0 +1,170 @@
+:host {
+  display: block;
+  container-type: inline-size;
+}
+
+.billet {
+  display: grid;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #2a2110, #151109 60%);
+  box-shadow:
+    0 0 0 1.5px var(--cs-or-fonce),
+    0 24px 60px rgba(0, 0, 0, 0.6);
+  text-align: left;
+  overflow: hidden;
+
+  @container (min-width: 520px) {
+    grid-template-columns: 1fr 150px;
+  }
+}
+
+.billet__principal {
+  display: flex;
+  gap: 16px;
+  padding: 18px;
+}
+
+.billet__affiche {
+  width: 86px;
+  aspect-ratio: 2 / 3;
+  flex-shrink: 0;
+  border-radius: 8px;
+  object-fit: cover;
+  box-shadow: 0 0 0 1px rgba(245, 197, 66, 0.4);
+}
+
+.billet__infos {
+  min-width: 0;
+
+  h3 {
+    margin-bottom: 10px;
+    font-size: 1.25rem;
+    font-style: italic;
+  }
+
+  dl {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    gap: 6px 16px;
+    margin: 0 0 12px;
+  }
+
+  dt {
+    color: var(--cs-or-fonce);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  dd {
+    margin: 0;
+    font-weight: 600;
+  }
+}
+
+.billet__surtitre {
+  margin: 0 0 4px;
+  color: var(--cs-or);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.billet__sieges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+// Talon détachable, séparé par des pointillés
+.billet__talon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 16px;
+  border-top: 2px dashed rgba(245, 197, 66, 0.35);
+  text-align: center;
+
+  @container (min-width: 520px) {
+    border-top: 0;
+    border-left: 2px dashed rgba(245, 197, 66, 0.35);
+  }
+
+  p {
+    margin: 0;
+  }
+}
+
+.code-barres {
+  width: 110px;
+  height: 46px;
+  fill: var(--cs-champagne);
+}
+
+.billet__numero {
+  color: var(--cs-or);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+}
+
+.billet__cinema {
+  color: var(--cs-texte-doux);
+  font-size: 0.8rem;
+}
+
+.capitale::first-letter {
+  text-transform: uppercase;
+}
+
+// Billet électronique : grande affiche en haut, gros code-barres sur fond clair (lisible par un scanner)
+:host(.vertical) {
+  .billet {
+    grid-template-columns: none;
+  }
+
+  .billet__principal {
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 22px 20px;
+    text-align: center;
+  }
+
+  .billet__affiche {
+    width: 130px;
+    rotate: -2deg;
+  }
+
+  .billet__infos dl {
+    justify-content: center;
+    text-align: left;
+  }
+
+  .billet__sieges {
+    justify-content: center;
+  }
+
+  .billet__talon {
+    padding: 22px;
+    border-left: 0;
+    border-top: 2px dashed rgba(245, 197, 66, 0.35);
+  }
+
+  .code-barres {
+    width: 100%;
+    height: 84px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: var(--cs-champagne);
+    fill: var(--cs-noir);
+  }
+
+  .billet__numero {
+    font-size: 1.15rem;
+    letter-spacing: 0.2em;
+  }
+}

@@ -1,4 +1,4 @@
-import { Component, computed, input, output, signal } from '@angular/core';
+import { Component, computed, input, model } from '@angular/core';
 
 // Plan de salle : ne fait aucun appel HTTP.
 // Reçoit la forme de la salle et les sièges pris, renvoie les sièges choisis.
@@ -13,9 +13,9 @@ export class SeatMap {
   siegesPris = input<string[]>([]);
   maxSieges = input(10);
 
-  selectionChange = output<string[]>();
-
-  protected selection = signal<string[]>([]);
+  // Sièges choisis. model() permet le [(selection)] dans la page parente,
+  // et émet aussi l'événement (selectionChange) à chaque changement
+  selection = model<string[]>([]);
 
   // ['A', 'B', 'C', …]
   protected lettres = computed(() =>
@@ -41,6 +41,5 @@ export class SeatMap {
     } else if (actuelle.length < this.maxSieges()) {
       this.selection.set([...actuelle, siege]);
     }
-    this.selectionChange.emit(this.selection());
   }
 }

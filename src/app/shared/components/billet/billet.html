@@ -1,0 +1,44 @@
+<article class="billet">
+  <div class="billet__principal">
+    @if (affiche(); as src) {
+      <img class="billet__affiche" [src]="src" [alt]="'Affiche de ' + (film()?.title ?? 'votre film')" />
+    }
+    <div class="billet__infos">
+      <p class="billet__surtitre">★ Ciné Star · Admission ★</p>
+      <h3>{{ film()?.title ?? 'Votre film' }}</h3>
+      <dl>
+        <div>
+          <dt>Date</dt>
+          <dd class="capitale">{{ seance().date | date: 'EEE d MMM' }}</dd>
+        </div>
+        <div>
+          <dt>Heure</dt>
+          <dd>{{ seance().heure }}</dd>
+        </div>
+        <div>
+          <dt>Salle</dt>
+          <dd>{{ seance().salle?.nom }}</dd>
+        </div>
+        <div>
+          <dt>Version</dt>
+          <dd>{{ seance().version }}</dd>
+        </div>
+      </dl>
+      <div class="billet__sieges">
+        @for (siege of reservation().sieges; track siege) {
+          <span class="ticket">{{ siege }}</span>
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="billet__talon">
+    <svg class="code-barres" viewBox="0 0 96 40" preserveAspectRatio="none" role="img" [attr.aria-label]="'Code-barres ' + numero()">
+      @for (b of barres(); track b.x) {
+        <rect [attr.x]="b.x" y="0" [attr.width]="b.largeur" height="40" />
+      }
+    </svg>
+    <p class="billet__numero">N° {{ numero() }}</p>
+    <p class="billet__cinema">{{ seance().cinema?.nom }}</p>
+  </div>
+</article>

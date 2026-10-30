@@ -1,62 +1,97 @@
 <div class="container page">
-  <a class="retour" [routerLink]="['/film', film().id]">
-    <span class="material-symbols-outlined">arrow_back</span> Retour au film
-  </a>
+  @if (chargement()) {
+    <app-loader message="On prépare la salle…" />
+  } @else if (erreurChargement() || !seance()) {
+    <div class="etat-vide">
+      <span class="emoji">🎭</span>
+      <p>Cette séance est introuvable ou le serveur ne répond pas.</p>
+      <button type="button" class="bouton-contour" (click)="charger(+seanceId())">Réessayer</button>
+    </div>
+  } @else {
+    @let s = seance()!;
+    <a class="retour" [routerLink]="['/film', s.tmdbId]">
+      <span class="material-symbols-outlined">arrow_back</span> Retour au film
+    </a>
 
-  <div class="mise-en-page">
-    <section class="carte plan">
-      <h1>Choisissez vos places</h1>
-      <p class="texte-doux">{{ salle().nom }} · {{ salle().rangees * salle().siegesParRangee }} places</p>
-      <app-seat-map
-        [rangees]="salle().rangees"
-        [siegesParRangee]="salle().siegesParRangee"
-        [siegesPris]="seance().siegesPris"
-        (selectionChange)="siegesChoisis.set($event)"
-      />
-    </section>
-
-    <aside class="carte recap">
-      <p class="recap__surtitre">Votre séance</p>
-      <h2>{{ film().title }}</h2>
-
-      <dl>
-        <div>
-          <dt><span class="material-symbols-outlined">location_on</span> Cinéma</dt>
-          <dd>{{ cinema()?.nom }}</dd>
-        </div>
-        <div>
-          <dt><span class="material-symbols-outlined">calendar_today</span> Date</dt>
-          <dd class="capitale">{{ seance().date | date: 'EEEE d MMMM' }}</dd>
-        </div>
-        <div>
-          <dt><span class="material-symbols-outlined">schedule</span> Heure</dt>
-          <dd>{{ seance().heure }}</dd>
-        </div>
-        <div>
-          <dt><span class="material-symbols-outlined">translate</span> Version</dt>
-          <dd>{{ seance().version }}</dd>
-        </div>
-      </dl>
-
-      <div class="sieges">
-        <p class="texte-doux">Sièges ({{ siegesChoisis().length }})</p>
-        <div class="sieges__liste">
-          @for (s of siegesChoisis(); track s) {
-            <span class="ticket">{{ s }}</span>
-          } @empty {
-            <span class="texte-doux">Cliquez sur un siège pour le choisir 👆</span>
-          }
-        </div>
-      </div>
-
-      <button type="button" class="bouton-or" [disabled]="!siegesChoisis().length" (click)="reserver()">
-        <span class="material-symbols-outlined">local_activity</span>
-        @if (siegesChoisis().length) {
-          Réserver {{ siegesChoisis().length }} place{{ siegesChoisis().length > 1 ? 's' : '' }}
-        } @else {
-          Réserver
+    <div class="mise-en-page">
+      <section class="carte plan">
+        <h1>Choisissez vos places</h1>
+        @if (s.salle; as salle) {
+          <p class="texte-doux">
+            {{ salle.nom }} · {{ salle.rangees * salle.siegesParRangee - s.siegesPris.length }} places libres
+          </p>
+          <app-seat-map
+            [rangees]="salle.rangees"
+            [siegesParRangee]="salle.siegesParRangee"
+            [siegesPris]="s.siegesPris"
+            [(selection)]="siegesChoisis"
+          />
         }
-      </button>
-    </aside>
-  </div>
+      </section>
+
+      <aside class="carte recap">
+        <p class="recap__surtitre">Votre séance</p>
+        <h2>{{ film()?.title ?? 'Film' }}</h2>
+
+        <dl>
+          <div>
+            <dt><span class="material-symbols-outlined">location_on</span> Cinéma</dt>
+            <dd>{{ s.cinema?.nom }}</dd>
+          </div>
+          <div>
+            <dt><span class="material-symbols-outlined">calendar_today</span> Date</dt>
+            <dd class="capitale">{{ s.date | date: 'EEEE d MMMM' }}</dd>
+          </div>
+          <div>
+            <dt><span class="material-symbols-outlined">schedule</span> Heure</dt>
+            <dd>{{ s.heure }}</dd>
+          </div>
+          <div>
+            <dt><span class="material-symbols-outlined">translate</span> Version</dt>
+            <dd>{{ s.version }}</dd>
+          </div>
+        </dl>
+
+        <div class="sieges">
+          <p class="texte-doux">Sièges ({{ siegesChoisis().length }})</p>
+          <div class="sieges__liste">
+            @for (siege of siegesChoisis(); track siege) {
+              <span class="ticket">{{ siege }}</span>
+            } @empty {
+              <span class="texte-doux">Cliquez sur un siège pour le choisir 👆</span>
+            }
+          </div>
+        </div>
+
+        @if (erreur()) {
+          <p class="erreur" role="alert">{{ erreur() }}</p>
+        }
+
+        <button
+          type="button"
+          class="bouton-or"
+          [disabled]="!siegesChoisis().length || enCours()"
+          (click)="reserver()"
+        >
+          <span class="material-symbols-outlined">local_activity</span>
+          @if (enCours()) {
+            Réservation en cours…
+          } @else if (siegesChoisis().length) {
+            Réserver {{ siegesChoisis().length }} place{{ siegesChoisis().length > 1 ? 's' : '' }}
+          } @else {
+            Réserver
+          }
+        </button>
+      </aside>
+    </div>
+  }
 </div>
+
+@if (confirmation(); as resa) {
+  <app-booking-confirmation
+    [reservation]="resa"
+    [seance]="seance()!"
+    [film]="film()"
+    (fermer)="confirmation.set(null)"
+  />
+}
