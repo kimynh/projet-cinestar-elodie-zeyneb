@@ -7,7 +7,7 @@
 
     <form class="recherche" role="search" (submit)="$event.preventDefault(); rechercher(q.value)">
       <span class="material-symbols-outlined">search</span>
-      <input #q type="search" placeholder="Rechercher un film…" aria-label="Rechercher un film" />
+      <input #q type="search" [value]="texteUrl()" (input)="taper(q.value)" placeholder="Rechercher un film…" aria-label="Rechercher un film" />
     </form>
 
     <button

@@ -1,26 +1,83 @@
 @if (vedette(); as film) {
-  <section class="hero">
-    <!-- Deux projecteurs qui balaient le fond -->
-    <div class="projecteur projecteur--gauche"></div>
-    <div class="projecteur projecteur--droite"></div>
+  <section
+    class="hero"
+    [class.en-pause]="enPause()"
+    (mouseenter)="enPause.set(true)"
+    (mouseleave)="enPause.set(false)"
+    (focusin)="enPause.set(true)"
+    (focusout)="enPause.set(false)"
+  >
+    <!-- @for sur un seul film : le bloc est recréé quand le film change, ce qui relance l'animation d'apparition -->
+    @for (f of [film]; track f.id) {
+      @if (image(f.backdrop_path, 'w1280'); as fond) {
+        <img class="hero__fond" [src]="fond" alt="" />
+      }
+      <div class="hero__voile"></div>
+      <!-- Deux projecteurs qui balaient le fond -->
+      <div class="projecteur projecteur--gauche"></div>
+      <div class="projecteur projecteur--droite"></div>
 
-    <div class="container hero__contenu">
-      <span class="badge">🍿 Ce soir, on se fait une toile ?</span>
-
-      <!-- Fronton de cinéma avec ses ampoules -->
-      <div class="fronton">
-        <p class="fronton__surtitre">✦ À l'affiche cette semaine ✦</p>
-        <h1 class="fronton__titre">{{ film.title }}</h1>
-      </div>
-
-      <p class="hero__resume">{{ film.overview }}</p>
-      <div class="hero__actions">
-        <a class="bouton-or" [routerLink]="['/film', film.id]">
-          <span class="material-symbols-outlined">local_activity</span> Réserver mes places
+      <div class="container hero__contenu">
+        <a class="hero__affiche" [routerLink]="['/film', f.id]">
+          @if (image(f.poster_path, 'w500'); as affiche) {
+            <img [src]="affiche" [alt]="'Affiche de ' + f.title" />
+          }
+          @if (f.vote_average) {
+            <span class="hero__note">★ {{ f.vote_average | number: '1.1-1' }}</span>
+          }
         </a>
-        <a class="bouton-contour" [routerLink]="['/film', film.id]">Voir la fiche</a>
+
+        <div class="hero__texte">
+          <span class="badge">🍿 Ce soir, on se fait une toile ?</span>
+
+          <!-- Fronton de cinéma avec ses ampoules -->
+          <div class="fronton">
+            <p class="fronton__surtitre">✦ À l'affiche cette semaine ✦</p>
+            <h1 class="fronton__titre">{{ f.title }}</h1>
+          </div>
+
+          <div class="hero__infos">
+            @if (f.release_date) {
+              <span class="pastille">📅 Sortie le {{ f.release_date | date: 'd MMMM y' }}</span>
+            }
+            @for (nom of nomsGenres(f); track nom) {
+              <span class="pastille">{{ nom }}</span>
+            }
+          </div>
+
+          @if (f.overview) {
+            <p class="hero__resume">{{ f.overview }}</p>
+          }
+          <div class="hero__actions">
+            <a class="bouton-or" [routerLink]="['/film', f.id]">
+              <span class="material-symbols-outlined">local_activity</span> Réserver mes places
+            </a>
+            <a class="bouton-contour" [routerLink]="['/film', f.id]">Voir la fiche</a>
+          </div>
+        </div>
       </div>
-    </div>
+    }
+
+    @if (vedettes().length > 1) {
+      <div class="container vignettes" role="group" aria-label="Choisir le film mis en avant">
+        @for (v of vedettes(); track v.id; let i = $index) {
+          <button
+            type="button"
+            class="vignette"
+            [class.active]="i === indexVedette()"
+            [attr.aria-pressed]="i === indexVedette()"
+            [attr.aria-label]="v.title"
+            (click)="indexVedette.set(i)"
+          >
+            <img [src]="image(v.poster_path, 'w154')" alt="" loading="lazy" />
+            @if (i === indexVedette()) {
+              <!-- Quand la barre est pleine, on passe au film suivant -->
+              <span class="vignette__progression" (animationend)="vedetteSuivante()"></span>
+            }
+          </button>
+        }
+      </div>
+    }
   </section>
 }
 

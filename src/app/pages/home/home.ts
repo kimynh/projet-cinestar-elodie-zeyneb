@@ -1,14 +1,16 @@
 import { Component, computed, inject, signal } from '@angular/core';
+import { DatePipe, DecimalPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { catchError, forkJoin, of } from 'rxjs';
 import { MovieCard } from '../../shared/components/movie-card/movie-card';
 import { Loader } from '../../shared/components/loader/loader';
 import { TmdbService } from '../../core/services/tmdb.service';
 import { Genre, Movie } from '../../core/models/movie.model';
+import { tmdbImage } from '../../shared/tmdb-image';
 
 @Component({
   selector: 'app-home',
-  imports: [MovieCard, Loader, RouterLink],
+  imports: [MovieCard, Loader, RouterLink, DatePipe, DecimalPipe],
   templateUrl: './home.html',
   styleUrl: './home.scss',
 })
@@ -40,7 +42,19 @@ export class Home {
     80: '🕵️',
   };
 
-  protected vedette = computed(() => this.films()[0]);
+  // Les 5 premiers films qui ont une image de fond et une affiche défilent en haut de page
+  protected vedettes = computed(() =>
+    this.films()
+      .filter((f) => f.backdrop_path && f.poster_path)
+      .slice(0, 5),
+  );
+  protected indexVedette = signal(0);
+  protected vedette = computed(() => this.vedettes()[this.indexVedette()] ?? this.films()[0]);
+
+  // Le défilement s'arrête quand la souris est sur le bandeau
+  protected enPause = signal(false);
+
+  protected image = tmdbImage;
 
   protected filmsFiltres = computed(() => {
     const genre = this.genreChoisi();
@@ -49,6 +63,18 @@ export class Home {
 
   constructor() {
     this.charger();
+  }
+
+  // Appelée à la fin de la barre de progression de la vignette active
+  protected vedetteSuivante() {
+    this.indexVedette.update((i) => (i + 1) % this.vedettes().length);
+  }
+
+  protected nomsGenres(film: Movie) {
+    return this.genres()
+      .filter((g) => film.genre_ids?.includes(g.id))
+      .slice(0, 3)
+      .map((g) => g.name);
   }
 
   // Appelée au démarrage et par le bouton « Réessayer »

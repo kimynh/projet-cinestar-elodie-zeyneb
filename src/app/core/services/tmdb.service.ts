@@ -20,6 +20,15 @@ export class TmdbService {
       .pipe(map((rep) => rep.results));
   }
 
+  // Films dont le titre correspond au texte tapé
+  searchMovies(texte: string) {
+    return this.http
+      .get<{ results: Movie[] }>(`${environment.tmdbUrl}/search/movie`, {
+        params: { query: texte, include_adult: false },
+      })
+      .pipe(map((rep) => rep.results));
+  }
+
   // Liste des genres (Action, Comédie, ...)
   getGenres() {
     return this.http

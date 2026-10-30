@@ -1,13 +1,49 @@
 .hero {
   position: relative;
-  padding-block: 56px 64px;
+  padding-block: 40px 28px;
   overflow: hidden;
+  isolation: isolate;
   background:
     radial-gradient(ellipse at 50% 0%, rgba(245, 197, 66, 0.22), transparent 60%),
     linear-gradient(180deg, #17120a, transparent);
 
   @media (min-width: 768px) {
-    padding-block: 88px 96px;
+    padding-block: 72px 36px;
+  }
+}
+
+// Image du film en fond, assombrie pour que le texte reste lisible
+.hero__fond {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+  opacity: 0.55;
+  animation: fondu 1s ease both, zoom-lent 18s ease-out both;
+}
+
+.hero__voile {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(ellipse at 30% 40%, rgba(245, 197, 66, 0.16), transparent 55%),
+    linear-gradient(90deg, rgba(9, 8, 10, 0.92) 0%, rgba(9, 8, 10, 0.55) 55%, rgba(9, 8, 10, 0.8) 100%),
+    linear-gradient(180deg, rgba(9, 8, 10, 0.2) 0%, var(--cs-noir) 100%);
+}
+
+@keyframes fondu {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes zoom-lent {
+  from {
+    transform: scale(1.08);
   }
 }
 
@@ -47,14 +83,95 @@
 
 .hero__contenu {
   position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 28px;
+  text-align: center;
+
+  @media (min-width: 900px) {
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    justify-items: start;
+    gap: 56px;
+    text-align: left;
+  }
+}
+
+// Affiche légèrement penchée dans un cadre doré
+.hero__affiche {
+  position: relative;
+  width: min(170px, 45vw);
+  aspect-ratio: 2 / 3;
+  border-radius: 14px;
+  overflow: hidden;
+  rotate: -3deg;
+  box-shadow:
+    0 0 0 2px var(--cs-or),
+    0 0 0 7px rgba(245, 197, 66, 0.15),
+    0 30px 70px rgba(0, 0, 0, 0.7),
+    0 0 90px rgba(245, 197, 66, 0.25);
+  animation: entree-affiche 0.8s cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
+  transition: rotate 0.4s, scale 0.4s;
+
+  &:hover {
+    rotate: 0deg;
+    scale: 1.03;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  @media (min-width: 900px) {
+    width: 280px;
+  }
+}
+
+.hero__note {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(9, 8, 10, 0.85);
+  color: var(--cs-or);
+  font-weight: 700;
+  font-size: 0.9rem;
+  backdrop-filter: blur(4px);
+}
+
+@keyframes entree-affiche {
+  from {
+    opacity: 0;
+    translate: 0 30px;
+    rotate: -12deg;
+  }
+}
+
+.hero__texte {
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
+  min-width: 0;
+  max-width: 100%;
+  animation: entree-texte 0.7s 0.1s ease both;
+
+  @media (min-width: 900px) {
+    align-items: flex-start;
+  }
+}
+
+@keyframes entree-texte {
+  from {
+    opacity: 0;
+    translate: 0 16px;
+  }
 }
 
 .badge {
-  margin-bottom: 28px;
+  margin-bottom: 24px;
   padding: 8px 18px;
   border-radius: 999px;
   background: rgba(245, 197, 66, 0.12);
@@ -116,10 +233,30 @@
   filter: drop-shadow(0 2px 12px rgba(245, 197, 66, 0.35));
 }
 
+.hero__infos {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 24px;
+
+  @media (min-width: 900px) {
+    justify-content: flex-start;
+  }
+
+  .pastille {
+    cursor: default;
+  }
+}
+
 .hero__resume {
-  max-width: 58ch;
-  margin: 32px 0;
-  color: #d9d1c2;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  max-width: 60ch;
+  margin: 20px 0 28px;
+  color: #e4dccd;
   font-size: 1.05rem;
 }
 
@@ -128,6 +265,79 @@
   flex-wrap: wrap;
   justify-content: center;
   gap: 12px;
+}
+
+// Petites affiches pour choisir le film mis en avant
+.vignettes {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 40px;
+
+  @media (min-width: 900px) {
+    justify-content: flex-end;
+  }
+}
+
+.vignette {
+  position: relative;
+  width: 52px;
+  aspect-ratio: 2 / 3;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--cs-noir-3);
+  cursor: pointer;
+  opacity: 0.5;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  transition: opacity 0.2s, outline-color 0.2s, translate 0.2s;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &:hover,
+  &:focus-visible {
+    opacity: 0.9;
+    translate: 0 -3px;
+  }
+
+  &.active {
+    opacity: 1;
+    outline-color: var(--cs-or);
+    box-shadow: var(--cs-lueur);
+  }
+
+  @media (min-width: 768px) {
+    width: 64px;
+  }
+}
+
+// Se remplit en 8 s, puis le film suivant s'affiche
+.vignette__progression {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 4px;
+  width: 100%;
+  background: var(--cs-degrade-or);
+  transform-origin: left;
+  animation: progression 8s linear both;
+
+  .en-pause & {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes progression {
+  from {
+    transform: scaleX(0);
+  }
 }
 
 .genres {

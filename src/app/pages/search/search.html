@@ -5,16 +5,38 @@
     <h1 class="titre-section">Recherche</h1>
   }
 
-  @if (resultats().length) {
-    <div class="grille-films">
-      @for (film of resultats(); track film.id) {
-        <app-movie-card [movie]="film" />
+  @let resultat = etat();
+  @switch (resultat.statut) {
+    @case ('chargement') {
+      <app-loader message="On fouille la cinémathèque…" />
+    }
+    @case ('erreur') {
+      <div class="etat-vide">
+        <span class="emoji">📡</span>
+        <p>La recherche n’a pas pu aboutir. Vérifiez votre connexion et réessayez.</p>
+        <button type="button" class="bouton-contour" (click)="reessayer()">Réessayer</button>
+      </div>
+    }
+    @case ('ok') {
+      @if (resultat.films.length) {
+        <p class="compteur">{{ resultat.films.length }} film{{ resultat.films.length > 1 ? 's' : '' }} trouvé{{ resultat.films.length > 1 ? 's' : '' }}</p>
+        <div class="grille-films">
+          @for (film of resultat.films; track film.id) {
+            <app-movie-card [movie]="film" />
+          }
+        </div>
+      } @else {
+        <div class="etat-vide">
+          <span class="emoji">🎞️</span>
+          <p>Aucun film ne correspond à « {{ q() }} ». Essayez un autre titre.</p>
+        </div>
       }
-    </div>
-  } @else {
-    <div class="etat-vide">
-      <span class="emoji">🔍</span>
-      <p>{{ q() ? 'Aucun film trouvé.' : 'Tapez le titre d’un film dans la barre de recherche.' }}</p>
-    </div>
+    }
+    @default {
+      <div class="etat-vide">
+        <span class="emoji">🔍</span>
+        <p>Tapez au moins 2 lettres du titre d’un film dans la barre de recherche.</p>
+      </div>
+    }
   }
 </div>
