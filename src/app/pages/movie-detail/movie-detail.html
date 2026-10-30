@@ -1,28 +1,40 @@
+@if (chargement()) {
+  <app-loader message="Chargement du film…" />
+} @else if (erreur() || !film()) {
+  <div class="container page">
+    <div class="etat-vide">
+      <span class="emoji">😕</span>
+      <p>Impossible de charger ce film. Vérifiez votre connexion et réessayez.</p>
+      <a class="bouton-contour" routerLink="/">Retour à l'accueil</a>
+    </div>
+  </div>
+} @else {
+@if (film(); as f) {
 <section class="bandeau" [style.--fond]="fond() ? 'url(' + fond() + ')' : null">
   <div class="container bandeau__contenu">
     <div class="affiche">
       @if (affiche(); as src) {
-        <img [src]="src" [alt]="'Affiche de ' + film().title" />
+        <img [src]="src" [alt]="'Affiche de ' + f.title" />
       } @else {
         <div class="affiche-vide">★</div>
       }
     </div>
 
     <div class="infos">
-      <h1>{{ film().title }}</h1>
+      <h1>{{ f.title }}</h1>
       <p class="meta">
-        <span>{{ film().release_date | date: 'yyyy' }}</span>
-        @if (film().runtime) {
-          <span>{{ film().runtime | duree }}</span>
+        <span>{{ f.release_date | date: 'yyyy' }}</span>
+        @if (f.runtime) {
+          <span>{{ f.runtime | duree }}</span>
         }
-        <span class="note"><span class="material-symbols-outlined">star</span>{{ film().vote_average | number: '1.1-1' }}</span>
+        <span class="note"><span class="material-symbols-outlined">star</span>{{ f.vote_average | number: '1.1-1' }}</span>
       </p>
       <div class="genres">
-        @for (g of film().genres; track g.id) {
+        @for (g of f.genres; track g.id) {
           <span class="pastille">{{ g.name }}</span>
         }
       </div>
-      <p class="resume">{{ film().overview || 'Résumé non disponible.' }}</p>
+      <p class="resume">{{ f.overview || 'Résumé non disponible.' }}</p>
       <div class="actions">
         <a class="bouton-or" href="#seances"><span class="material-symbols-outlined">event_seat</span> Voir les séances</a>
         <button type="button" class="bouton-contour" aria-label="Ajouter aux favoris">
@@ -32,6 +44,7 @@
     </div>
   </div>
 </section>
+}
 
 <div class="container page">
   <!-- Séances -->
@@ -113,3 +126,4 @@
     }
   </section>
 </div>
+}

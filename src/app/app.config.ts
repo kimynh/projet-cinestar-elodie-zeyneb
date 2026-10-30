@@ -5,6 +5,7 @@ import localeFr from '@angular/common/locales/fr';
 import { provideRouter, withComponentInputBinding, withInMemoryScrolling } from '@angular/router';
 import { routes } from './app.routes';
 import { authInterceptor } from './core/interceptors/auth-interceptor';
+import { tmdbInterceptor } from './core/interceptors/tmdb-interceptor';
 
 // Dates affichées en français (« mercredi 2 décembre »)
 registerLocaleData(localeFr);
@@ -18,7 +19,7 @@ export const appConfig: ApplicationConfig = {
       withComponentInputBinding(),
       withInMemoryScrolling({ scrollPositionRestoration: 'top' }),
     ),
-    provideHttpClient(withInterceptors([authInterceptor])),
+    provideHttpClient(withInterceptors([tmdbInterceptor, authInterceptor])),
     { provide: LOCALE_ID, useValue: 'fr' },
   ],
 };
