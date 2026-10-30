@@ -1,7 +1,15 @@
 <div class="container page">
   <h1 class="titre-section">Mes favoris</h1>
 
-  @if (favoris().length) {
+  @if (chargement()) {
+    <app-loader message="On retrouve vos coups de cœur…" />
+  } @else if (erreur()) {
+    <div class="etat-vide">
+      <span class="emoji">📡</span>
+      <p>Impossible de charger vos favoris. Vérifiez que l’application est lancée avec « npm start ».</p>
+      <button type="button" class="bouton-contour" (click)="charger()">Réessayer</button>
+    </div>
+  } @else if (favoris().length) {
     <div class="grille-films">
       @for (film of favoris(); track film.id) {
         <app-movie-card [movie]="film" />

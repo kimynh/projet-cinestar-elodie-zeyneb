@@ -1,6 +1,6 @@
 .carte-film {
+  position: relative;
   display: block;
-  color: inherit;
 
   &:hover .carte-film__affiche {
     transform: translateY(-8px) rotate(-1.2deg);
@@ -17,6 +17,19 @@
   &:hover .carte-film__titre {
     color: var(--cs-or-clair);
   }
+}
+
+.carte-film__lien {
+  display: block;
+  color: inherit;
+}
+
+// Cœur des favoris, posé en haut à gauche de l'affiche (la note est en haut à droite)
+.carte-film__favori {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 2;
 }
 
 .carte-film__affiche {

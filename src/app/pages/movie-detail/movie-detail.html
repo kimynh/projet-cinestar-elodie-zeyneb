@@ -36,9 +36,7 @@
       </div>
       <p class="resume">{{ f.overview || 'Résumé non disponible.' }}</p>
       <div class="actions">
-        <button type="button" class="bouton-contour" aria-label="Ajouter aux favoris">
-          <span class="material-symbols-outlined">favorite</span> Favori
-        </button>
+        <app-favori-button [tmdbId]="f.id" variante="texte" />
       </div>
     </div>
   </div>

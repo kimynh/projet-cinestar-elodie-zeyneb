@@ -11,6 +11,7 @@ import { Review } from '../../core/models/review.model';
 import { Seance } from '../../core/models/seance.model';
 import { TmdbService } from '../../core/services/tmdb.service';
 import { SeanceService } from '../../core/services/seance.service';
+import { FavoriButton } from '../../shared/components/favori-button/favori-button';
 
 interface GroupeSeances {
   cinema: string;
@@ -19,7 +20,7 @@ interface GroupeSeances {
 
 @Component({
   selector: 'app-movie-detail',
-  imports: [RouterLink, DatePipe, DecimalPipe, DureePipe, Loader],
+  imports: [RouterLink, DatePipe, DecimalPipe, DureePipe, Loader, FavoriButton],
   templateUrl: './movie-detail.html',
   styleUrl: './movie-detail.scss',
 })

@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 import { MovieCard } from './movie-card';
 import { MOCK_FILMS } from '../../mock-data';
@@ -11,7 +13,7 @@ describe('MovieCard', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [MovieCard],
-      providers: [provideRouter([])],
+      providers: [provideRouter([]), provideHttpClient(), provideHttpClientTesting()],
     })
     .compileComponents();
 

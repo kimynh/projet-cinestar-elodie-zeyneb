@@ -3,10 +3,11 @@ import { DecimalPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Movie } from '../../../core/models/movie.model';
 import { tmdbImage } from '../../tmdb-image';
+import { FavoriButton } from '../favori-button/favori-button';
 
 @Component({
   selector: 'app-movie-card',
-  imports: [RouterLink, DecimalPipe],
+  imports: [RouterLink, DecimalPipe, FavoriButton],
   templateUrl: './movie-card.html',
   styleUrl: './movie-card.scss',
 })
